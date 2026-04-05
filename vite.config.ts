@@ -25,7 +25,15 @@ export default defineConfig(({ mode }) => {
         minify: 'esbuild',
         rollupOptions: {
           output: {
-            manualChunks: undefined,
+            manualChunks(id) {
+              if (id.includes('node_modules')) {
+                if (id.includes('react')) {
+                  return 'react-vendor';
+                }
+
+                return 'vendor';
+              }
+            },
           },
         },
       }

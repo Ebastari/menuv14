@@ -1,47 +1,62 @@
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { GrowthCard } from './components/GrowthCard';
 import { MenuGrid } from './components/MenuGrid';
 import { BottomNav } from './components/BottomNav';
 import { WeatherOverlay } from './components/WeatherOverlay';
-import { Login } from './components/Login';
-import { ProfileEdit } from './components/ProfileEdit';
-import { AboutSection } from './components/AboutSection';
-import { DashboardBibitAI } from './components/DashboardBibitAI';
-import { ExternalPortraitView } from './components/ExternalPortraitView';
-import { LookerStudioView } from './components/LookerStudioView';
 import { RosterWidget } from './components/RosterWidget';
 import { SeedlingSummary } from './components/SeedlingSummary';
 import { HelpCenter } from './components/HelpCenter';
 import { LayananPengaduan } from './components/LayananPengaduan';
 import { FloatingStockBubble } from './components/FloatingStockBubble';
 import { TopNavbar } from './components/TopNavbar';
-import { PartnerSection } from './components/PartnerSection';
-import { GamePromotionSection } from './components/GamePromotionSection';
-import { PlayStoreSection } from './components/PlayStoreSection';
-import { DeveloperInfo } from './components/DeveloperInfo';
 import { BibitNotificationToast } from './components/BibitNotificationToast';
-import { UserProfileView } from './components/UserProfileView';
-import { SubscribeWidget } from './components/SubscribeWidget';
-import { GlobalFooter } from './components/GlobalFooter';
-import { MontanaProfile } from './components/MontanaProfile';
 import { Forecast7Days } from './components/Forecast7Days';
 import { SystemHistory } from './components/SystemHistory';
 import { WelcomeLoginPrompt } from './components/WelcomeLoginPrompt';
 import { CameraPreview } from './components/CameraPreview';
-import { ExternalFullscreenView } from './components/ExternalFullscreenView';
-import { AdminActivityLogs } from './components/AdminActivityLogs';
-import { LiteDashboard } from './components/LiteDashboard';
 import { MenuItem, UserProfile, WeatherCondition } from './types';
+import { getDashboardCache, setDashboardCache } from './montanaVault';
 
 const LOGO_URL = "https://i.ibb.co.com/pjNwjtj0/montana-AI-1-1.jpg";
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxljQVpyYZjBpRdZ0J_sgMXkTHX-v8i7_nBVYmnG25oLxZkpfuns_HwUyspxA66Vkvm/exec"; 
 const DIRECTIONS = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+const BIBIT_CACHE_KEY = 'latest-bibit-feed-v1';
+
+const Login = lazy(() => import('./components/Login').then((module) => ({ default: module.Login })));
+const ProfileEdit = lazy(() => import('./components/ProfileEdit').then((module) => ({ default: module.ProfileEdit })));
+const AboutSection = lazy(() => import('./components/AboutSection').then((module) => ({ default: module.AboutSection })));
+const DashboardBibitAI = lazy(() => import('./components/DashboardBibitAI').then((module) => ({ default: module.DashboardBibitAI })));
+const ExternalPortraitView = lazy(() => import('./components/ExternalPortraitView').then((module) => ({ default: module.ExternalPortraitView })));
+const LookerStudioView = lazy(() => import('./components/LookerStudioView').then((module) => ({ default: module.LookerStudioView })));
+const PartnerSection = lazy(() => import('./components/PartnerSection').then((module) => ({ default: module.PartnerSection })));
+const GamePromotionSection = lazy(() => import('./components/GamePromotionSection').then((module) => ({ default: module.GamePromotionSection })));
+const PlayStoreSection = lazy(() => import('./components/PlayStoreSection').then((module) => ({ default: module.PlayStoreSection })));
+const DeveloperInfo = lazy(() => import('./components/DeveloperInfo').then((module) => ({ default: module.DeveloperInfo })));
+const UserProfileView = lazy(() => import('./components/UserProfileView').then((module) => ({ default: module.UserProfileView })));
+const SubscribeWidget = lazy(() => import('./components/SubscribeWidget').then((module) => ({ default: module.SubscribeWidget })));
+const GlobalFooter = lazy(() => import('./components/GlobalFooter').then((module) => ({ default: module.GlobalFooter })));
+const MontanaProfile = lazy(() => import('./components/MontanaProfile').then((module) => ({ default: module.MontanaProfile })));
+const ExternalFullscreenView = lazy(() => import('./components/ExternalFullscreenView').then((module) => ({ default: module.ExternalFullscreenView })));
+const AdminActivityLogs = lazy(() => import('./components/AdminActivityLogs').then((module) => ({ default: module.AdminActivityLogs })));
+const LiteDashboard = lazy(() => import('./components/LiteDashboard').then((module) => ({ default: module.LiteDashboard })));
 
 const SectionWrapper: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = "" }) => (
   <section className={`px-4 sm:px-10 py-16 md:py-28 max-w-[1440px] mx-auto transition-all duration-700 animate-fadeIn ${className}`}>
     {children}
   </section>
+);
+
+const SectionFallback: React.FC<{ heightClass?: string }> = ({ heightClass = 'h-40' }) => (
+  <div className={`w-full ${heightClass} rounded-[36px] border border-dashed border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 animate-pulse`} />
+);
+
+const OverlayFallback: React.FC = () => (
+  <div className="fixed inset-0 z-[700] bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur-sm flex items-center justify-center">
+    <div className="px-6 py-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
+      <p className="text-[11px] font-black uppercase tracking-[0.28em] text-emerald-600">Loading Module</p>
+    </div>
+  </div>
 );
 
 const getReadabilityOverlayClass = (condition: WeatherCondition, isLiteMode: boolean) => {
@@ -116,6 +131,24 @@ const App: React.FC = () => {
   const [showDeveloperInfo, setShowDeveloperInfo] = useState(false);
   const [showMontanaProfile, setShowMontanaProfile] = useState(false);
 
+  type BibitFeedItem = {
+    tanggal: string;
+    bibit: string;
+    masuk: number;
+    keluar: number;
+    mati: number;
+  };
+
+  const normalizeBibitFeed = (rows: any[]): BibitFeedItem[] => {
+    return rows.map((row: any) => ({
+      tanggal: String(row.tanggal || row.Tanggal || ''),
+      bibit: (row.bibit || row.Bibit || '').toString().trim(),
+      masuk: parseInt(row.masuk || row.Masuk || 0),
+      keluar: parseInt(row.keluar || row.Keluar || 0),
+      mati: parseInt(row.mati || row.Mati || 0)
+    }));
+  };
+
   const handleOpenExternalLink = (item: MenuItem | { title: string; url: string }) => {
     const itemTitle = 'href' in item
       ? (language === 'id' ? item.title : (item.titleEn || item.title))
@@ -141,21 +174,46 @@ const App: React.FC = () => {
   }, [isAuthenticated, user.name]);
 
   useEffect(() => {
-    // Check if user was previously authenticated
-    const savedUserData = localStorage.getItem('montana_user_data');
-    const savedUserRole = localStorage.getItem('montana_user_role');
-    const savedOAuthStatus = localStorage.getItem('montana_oauth_status');
-    
-    if (savedUserData && savedUserRole) {
-      setUser(JSON.parse(savedUserData));
-      setUserRole(savedUserRole as 'admin' | 'guest');
-      setIsAuthenticated(true);
-      setIsOAuthAuthenticated(savedOAuthStatus === 'true');
-    }
-    
-    setLoading(false);
-    fetchLatestNotif(); 
-    // Do NOT automatically open login modal - user must request it
+    let isMounted = true;
+
+    const hydrateApp = async () => {
+      const savedUserData = localStorage.getItem('montana_user_data');
+      const savedUserRole = localStorage.getItem('montana_user_role');
+      const savedOAuthStatus = localStorage.getItem('montana_oauth_status');
+      let restoredRole: 'admin' | 'guest' | 'none' = 'none';
+
+      if (savedUserData && savedUserRole) {
+        restoredRole = savedUserRole as 'admin' | 'guest';
+        if (isMounted) {
+          setUser(JSON.parse(savedUserData));
+          setUserRole(restoredRole);
+          setIsAuthenticated(true);
+          setIsOAuthAuthenticated(savedOAuthStatus === 'true');
+        }
+      }
+
+      try {
+        const cachedBibitFeed = await getDashboardCache<BibitFeedItem[]>(BIBIT_CACHE_KEY);
+        if (isMounted && cachedBibitFeed?.value?.length) {
+          setAllBibitData(cachedBibitFeed.value);
+          setLatestUpdate(cachedBibitFeed.value[cachedBibitFeed.value.length - 1]);
+        }
+      } catch (error) {
+        console.warn('Latest bibit cache unavailable:', error);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+
+      void fetchLatestNotif(restoredRole);
+    };
+
+    void hydrateApp();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const todaySummary = useMemo(() => {
@@ -186,22 +244,17 @@ const App: React.FC = () => {
     } catch (err) { setWeatherCondition('cloudy'); }
   };
 
-  const fetchLatestNotif = async () => {
+  const fetchLatestNotif = async (roleOverride: 'admin' | 'guest' | 'none' = userRole) => {
     try {
-      const res = await fetch(`${SCRIPT_URL}?sheet=Bibit`);
+      const res = await fetch(`${SCRIPT_URL}?sheet=Bibit`, { cache: 'no-cache' });
       const json = await res.json();
       if (Array.isArray(json)) {
-        const normalized = json.map((r: any) => ({
-          tanggal: String(r.tanggal || ''), 
-          bibit: (r.bibit || '').toString().trim(),
-          masuk: parseInt(r.masuk || 0), 
-          keluar: parseInt(r.keluar || 0),
-          mati: parseInt(r.mati || 0)
-        }));
+        const normalized = normalizeBibitFeed(json);
         setAllBibitData(normalized);
+        await setDashboardCache(BIBIT_CACHE_KEY, normalized);
         if (normalized.length > 0) {
           setLatestUpdate(normalized[normalized.length - 1]);
-          if (userRole === 'admin') setShowDailyToast(true);
+          if (roleOverride === 'admin') setShowDailyToast(true);
         }
       }
     } catch (err) { console.warn("Seedling sync unavailable"); }
@@ -279,7 +332,7 @@ const App: React.FC = () => {
     localStorage.setItem('montana_user_role', role);
     localStorage.setItem('montana_oauth_status', 'false');
 
-    fetchLatestNotif();
+    void fetchLatestNotif(role);
   };
 
   const handleLogout = () => {
@@ -330,15 +383,17 @@ const App: React.FC = () => {
                   {!isAuthenticated && <WelcomeLoginPrompt onRequestLogin={() => setShowLoginModal(true)} language={language} />}
                   
                   {isLiteMode ? (
-                    <LiteDashboard 
-                      role={userRole} 
-                      onOpenDashboardAI={() => setShowDashboardAI(true)} 
-                      onOpenActivityLogs={() => setShowActivityLogs(true)} 
-                      onOpenLookerStudio={() => setShowLookerStudio(true)}
-                      onOpenExternalLink={handleOpenExternalLink}
-                      onRequestLogin={() => setShowLoginModal(true)} 
-                      language={language}
-                    />
+                    <Suspense fallback={<SectionFallback heightClass="h-[420px]" />}>
+                      <LiteDashboard 
+                        role={userRole} 
+                        onOpenDashboardAI={() => setShowDashboardAI(true)} 
+                        onOpenActivityLogs={() => setShowActivityLogs(true)} 
+                        onOpenLookerStudio={() => setShowLookerStudio(true)}
+                        onOpenExternalLink={handleOpenExternalLink}
+                        onRequestLogin={() => setShowLoginModal(true)} 
+                        language={language}
+                      />
+                    </Suspense>
                   ) : (
                     <div className="space-y-24">
                       {/* Weather/Forecast - Stays at Top */}
@@ -397,7 +452,9 @@ const App: React.FC = () => {
                       </AdminFeatureLock>
 
                       <GrowthCard currentSeconds={activeSeconds} user={user} isVerified={isOAuthAuthenticated} language={language} />
-                      <SubscribeWidget language={language} onOpenExternalLink={handleOpenExternalLink} />
+                      <Suspense fallback={<SectionFallback heightClass="h-56" />}>
+                        <SubscribeWidget language={language} onOpenExternalLink={handleOpenExternalLink} />
+                      </Suspense>
                       <SystemHistory language={language} />
                       
                       {/* System Intelligence & Montana Assistant - Full Width */}
@@ -411,8 +468,12 @@ const App: React.FC = () => {
           <div className={`${activeTab === 'profile' ? 'block' : 'hidden'}`}>
               <SectionWrapper>
                   <div className="space-y-16">
-                      <UserProfileView user={user} isOAuthAuthenticated={isOAuthAuthenticated} onOAuthSuccess={handleOAuthSuccess} onEdit={() => setShowProfileEdit(true)} onLogout={handleLogout} />
-                      <AboutSection onOpenMontanaProfile={() => setShowMontanaProfile(true)} onOpenDeveloper={() => setShowDeveloperInfo(true)} language={language} />
+                      <Suspense fallback={<SectionFallback heightClass="h-[520px]" />}>
+                        <UserProfileView user={user} isOAuthAuthenticated={isOAuthAuthenticated} onOAuthSuccess={handleOAuthSuccess} onEdit={() => setShowProfileEdit(true)} onLogout={handleLogout} />
+                      </Suspense>
+                      <Suspense fallback={<SectionFallback heightClass="h-48" />}>
+                        <AboutSection onOpenMontanaProfile={() => setShowMontanaProfile(true)} onOpenDeveloper={() => setShowDeveloperInfo(true)} language={language} />
+                      </Suspense>
                   </div>
               </SectionWrapper>
           </div>
@@ -420,16 +481,26 @@ const App: React.FC = () => {
       
       {!isLiteMode && (
         <div className="mt-24 space-y-24 relative z-10 transition-all duration-700">
-            <GamePromotionSection />
-            <PlayStoreSection isAuthenticated={isAuthenticated} onRequestLogin={() => setShowLoginModal(true)} />
-            <PartnerSection />
-            <GlobalFooter onOpenMontanaProfile={() => setShowMontanaProfile(true)} />
+            <Suspense fallback={<SectionFallback heightClass="h-72" />}>
+              <GamePromotionSection />
+            </Suspense>
+            <Suspense fallback={<SectionFallback heightClass="h-72" />}>
+              <PlayStoreSection isAuthenticated={isAuthenticated} onRequestLogin={() => setShowLoginModal(true)} />
+            </Suspense>
+            <Suspense fallback={<SectionFallback heightClass="h-48" />}>
+              <PartnerSection />
+            </Suspense>
+            <Suspense fallback={<SectionFallback heightClass="h-32" />}>
+              <GlobalFooter onOpenMontanaProfile={() => setShowMontanaProfile(true)} />
+            </Suspense>
         </div>
       )}
 
       {isLiteMode && (
         <div className="mt-12 transition-all duration-700">
-          <GlobalFooter onOpenMontanaProfile={() => setShowMontanaProfile(true)} />
+          <Suspense fallback={<SectionFallback heightClass="h-32" />}>
+            <GlobalFooter onOpenMontanaProfile={() => setShowMontanaProfile(true)} />
+          </Suspense>
         </div>
       )}
 
@@ -438,23 +509,59 @@ const App: React.FC = () => {
       
       <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} isAuthenticated={isAuthenticated} userRole={userRole} onRequestLogin={() => setShowLoginModal(true)} onOpenExternalLink={handleOpenExternalLink} language={language} />
 
-      {showLoginModal && <Login onVerified={handleLoginSuccess} onClose={() => setShowLoginModal(false)} />}
-      {showProfileEdit && <ProfileEdit user={user} onSave={(updated) => { 
-        const nextUser = {...user, ...updated};
-        fetch(`${SCRIPT_URL}?action=updateProfile&oldName=${encodeURIComponent(user.name)}&newName=${encodeURIComponent(updated.name || user.name)}&email=${encodeURIComponent(updated.email || '')}&phone=${encodeURIComponent(updated.telepon || '')}&role=${userRole}`, {
-          method: 'GET', mode: 'no-cors'
-        }).catch(() => {});
-        setUser(nextUser); 
-        localStorage.setItem('montana_user_data', JSON.stringify(nextUser));
-        setShowProfileEdit(false); 
-      }} onClose={() => setShowProfileEdit(false)} />}
-      {showDashboardAI && <DashboardBibitAI onClose={() => setShowDashboardAI(false)} />}
-      {showActivityLogs && <AdminActivityLogs onClose={() => setShowActivityLogs(false)} />}
-      {showLookerStudio && <LookerStudioView onClose={() => setShowLookerStudio(false)} />}
-      {externalView && <ExternalPortraitView title={externalView.title} url={externalView.url} onClose={() => setExternalView(null)} />}
-      {fullscreenView && <ExternalFullscreenView title={fullscreenView.title} subtitle={fullscreenView.subtitle} url={fullscreenView.url} accent={fullscreenView.accent} onClose={() => setFullscreenView(null)} />}
-      {showDeveloperInfo && <DeveloperInfo onClose={() => setShowDeveloperInfo(false)} />}
-      {showMontanaProfile && <MontanaProfile onClose={() => setShowMontanaProfile(false)} />}
+      {showLoginModal && (
+        <Suspense fallback={<OverlayFallback />}>
+          <Login onVerified={handleLoginSuccess} onClose={() => setShowLoginModal(false)} />
+        </Suspense>
+      )}
+      {showProfileEdit && (
+        <Suspense fallback={<OverlayFallback />}>
+          <ProfileEdit user={user} onSave={(updated) => { 
+            const nextUser = {...user, ...updated};
+            fetch(`${SCRIPT_URL}?action=updateProfile&oldName=${encodeURIComponent(user.name)}&newName=${encodeURIComponent(updated.name || user.name)}&email=${encodeURIComponent(updated.email || '')}&phone=${encodeURIComponent(updated.telepon || '')}&role=${userRole}`, {
+              method: 'GET', mode: 'no-cors'
+            }).catch(() => {});
+            setUser(nextUser); 
+            localStorage.setItem('montana_user_data', JSON.stringify(nextUser));
+            setShowProfileEdit(false); 
+          }} onClose={() => setShowProfileEdit(false)} />
+        </Suspense>
+      )}
+      {showDashboardAI && (
+        <Suspense fallback={<OverlayFallback />}>
+          <DashboardBibitAI onClose={() => setShowDashboardAI(false)} />
+        </Suspense>
+      )}
+      {showActivityLogs && (
+        <Suspense fallback={<OverlayFallback />}>
+          <AdminActivityLogs onClose={() => setShowActivityLogs(false)} />
+        </Suspense>
+      )}
+      {showLookerStudio && (
+        <Suspense fallback={<OverlayFallback />}>
+          <LookerStudioView onClose={() => setShowLookerStudio(false)} />
+        </Suspense>
+      )}
+      {externalView && (
+        <Suspense fallback={<OverlayFallback />}>
+          <ExternalPortraitView title={externalView.title} url={externalView.url} onClose={() => setExternalView(null)} />
+        </Suspense>
+      )}
+      {fullscreenView && (
+        <Suspense fallback={<OverlayFallback />}>
+          <ExternalFullscreenView title={fullscreenView.title} subtitle={fullscreenView.subtitle} url={fullscreenView.url} accent={fullscreenView.accent} onClose={() => setFullscreenView(null)} />
+        </Suspense>
+      )}
+      {showDeveloperInfo && (
+        <Suspense fallback={<OverlayFallback />}>
+          <DeveloperInfo onClose={() => setShowDeveloperInfo(false)} />
+        </Suspense>
+      )}
+      {showMontanaProfile && (
+        <Suspense fallback={<OverlayFallback />}>
+          <MontanaProfile onClose={() => setShowMontanaProfile(false)} />
+        </Suspense>
+      )}
     </div>
   );
 };

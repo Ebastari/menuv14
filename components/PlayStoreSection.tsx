@@ -54,7 +54,12 @@ export const PlayStoreSection: React.FC<PlayStoreSectionProps> = ({ isAuthentica
 
     try {
       if ('serviceWorker' in navigator) {
-        await navigator.serviceWorker.register('/sw.js');
+        const existingRegistration = await navigator.serviceWorker.getRegistration('/sw.js');
+        if (existingRegistration) {
+          void existingRegistration.update().catch(() => {});
+        } else {
+          await navigator.serviceWorker.register('/sw.js');
+        }
         await navigator.serviceWorker.ready;
       }
 

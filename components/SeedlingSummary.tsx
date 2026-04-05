@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { getDashboardCache, setDashboardCache } from '../montanaVault';
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby09rbjwN2EcVRwhsNBx8AREI7k41LY1LrZ-W4U36HmzMB5BePD9h8wBSVPJwa_Ycduvw/exec";
-const CACHE_KEY = "montana_seedling_cache_v6";
+const CACHE_KEY = 'seedling-summary-v1';
 
 interface BibitRow {
   tanggal: Date;
@@ -24,22 +25,47 @@ export const SeedlingSummary: React.FC<SeedlingSummaryProps> = ({ language = 'id
   const [isSyncing, setIsSyncing] = useState(false);
   const [activeCard, setActiveCard] = useState<'masuk' | 'keluar' | 'jenis' | 'produksi' | null>(null);
 
+  const normalizeRows = (rows: any[]): BibitRow[] => {
+    return rows.map((r: any) => ({
+      tanggal: new Date(r.Tanggal || r.tanggal),
+      bibit: (r.Bibit || r.jenis || r.bibit || '').toString().trim(),
+      masuk: parseInt(r.Masuk || r.masuk || 0),
+      keluar: parseInt(r.Keluar || r.keluar || 0),
+      mati: parseInt(r.Mati || r.mati || 0),
+      sumber: (r.Sumber || r.sumber || '').toString().trim(),
+      tujuan: (r.Tujuan || r.tujuan || '').toString().trim()
+    })).filter((r: BibitRow) => !isNaN(r.tanggal.getTime()) && r.bibit !== '');
+  };
+
   useEffect(() => {
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (cached) {
+    let isMounted = true;
+
+    const hydrateFromCache = async () => {
       try {
-        const parsed = JSON.parse(cached);
-        const normalized = parsed.map((r: any) => ({
-          ...r,
-          tanggal: new Date(r.tanggal)
+        const cached = await getDashboardCache<BibitRow[]>(CACHE_KEY);
+        if (!isMounted || !cached?.value?.length) {
+          return;
+        }
+
+        const normalized = cached.value.map((row: any) => ({
+          ...row,
+          tanggal: new Date(row.tanggal),
         }));
+
         setRawData(normalized);
         setLoading(false);
-      } catch (e) {
-        console.error("Cache corrupted");
+      } catch (error) {
+        console.error('Dashboard cache unavailable:', error);
+      } finally {
+        void fetchData();
       }
-    }
-    fetchData();
+    };
+
+    void hydrateFromCache();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const fetchData = async () => {
@@ -50,20 +76,11 @@ export const SeedlingSummary: React.FC<SeedlingSummaryProps> = ({ language = 'id
       
       const json = await res.json();
       const rows = Array.isArray(json) ? json : (json.Bibit || []);
-      
-      const normalized = rows.map((r: any) => ({
-        tanggal: new Date(r.Tanggal || r.tanggal),
-        bibit: (r.Bibit || r.jenis || '').toString().trim(),
-        masuk: parseInt(r.Masuk || r.masuk || 0),
-        keluar: parseInt(r.Keluar || r.keluar || 0),
-        mati: parseInt(r.Mati || r.mati || 0),
-        sumber: (r.Sumber || r.sumber || '').toString().trim(),
-        tujuan: (r.Tujuan || r.tujuan || '').toString().trim()
-      })).filter((r: any) => !isNaN(r.tanggal.getTime()) && r.bibit !== "");
+      const normalized = normalizeRows(rows);
 
       if (normalized.length > 0) {
         setRawData(normalized);
-        localStorage.setItem(CACHE_KEY, JSON.stringify(normalized));
+        await setDashboardCache(CACHE_KEY, normalized);
       }
     } catch (err) {
       console.warn("Sync failed:", err);

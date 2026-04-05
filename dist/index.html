@@ -31,56 +31,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                    },
-                    animation: {
-                        'drift-puff': 'drift-puff 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                        'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
-                        'fadeIn': 'fadeIn 0.6s ease-out forwards',
-                        'pulse-gentle': 'pulse-gentle 3s infinite ease-in-out',
-                        'float': 'float 6s ease-in-out infinite',
-                        'shimmer-fast': 'shimmer 1.5s infinite linear',
-                    },
-                    keyframes: {
-                        'drift-puff': {
-                            '0%': { opacity: '0', transform: 'translateY(20px) scale(0.98)' },
-                            '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
-                        },
-                        'shake': {
-                            '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
-                            '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
-                            '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
-                            '40%, 60%': { transform: 'translate3d(4px, 0, 0)' },
-                        },
-                        'fadeIn': {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        'pulse-gentle': {
-                            '0%, 100%': { transform: 'scale(1)', opacity: 1 },
-                            '50%': { transform: 'scale(1.015)', opacity: 0.9 },
-                        },
-                        'float': {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        },
-                        'shimmer': {
-                          '0%': { 'background-position': '-200% 0' },
-                          '100%': { 'background-position': '200% 0' },
-                        }
-                    }
-                },
-            },
-        }
-    </script>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
@@ -90,8 +40,10 @@
     <!-- PushAja Pixel -->
     <script defer src="https://app.pushaja.com/pixel/QI9L3YVVrSysO4g0"></script>
     
-  <script type="module" crossorigin src="/assets/index-B-1uuzF6.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-D38PW14r.css">
+  <script type="module" crossorigin src="/assets/index-DiCx1FlF.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/vendor-Bb8JjhAW.js">
+  <link rel="modulepreload" crossorigin href="/assets/react-vendor-Tgx5NSe0.js">
+  <link rel="stylesheet" crossorigin href="/assets/index-CURTSZ82.css">
 </head>
 <body class="overflow-x-hidden theme-transition selection:bg-emerald-500/30">
     <div id="root"></div>

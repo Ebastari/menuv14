@@ -1,79 +1,160 @@
 
-/* Montana AI Pro - Service Worker v4.5.1 */
+/* Montana AI Pro - Service Worker v4.6.0 */
 let website_id = 227;
 let website_pixel_key = 'QI9L3YVVrSysO4g0';
 
-const CACHE_NAME = 'montana-ai-v4.5.1';
-const ASSETS_TO_CACHE = [
+const SHELL_CACHE = 'montana-shell-v4.6.0';
+const STATIC_CACHE = 'montana-static-v4.6.0';
+const DATA_CACHE = 'montana-data-v4.6.0';
+const PRECACHE_URLS = [
   '/',
   '/index.html',
-  '/index.tsx',
   '/manifest.json',
   '/metadata.json',
-  'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
-  'https://cdn.tailwindcss.com'
+  '/robots.txt',
+  '/sitemap.xml',
+  '/googlef5cab2ebc4f2ab35.html'
 ];
 
-// Install Event - Caching Inti
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW] Pre-caching core assets');
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
+    (async () => {
+      const cache = await caches.open(SHELL_CACHE);
+      await Promise.all(PRECACHE_URLS.map(async (url) => {
+        try {
+          await cache.add(new Request(url, { cache: 'reload' }));
+        } catch (error) {
+          console.warn('[SW] Precache skipped:', url, error);
+        }
+      }));
+    })()
   );
   self.skipWaiting();
 });
 
-// Activate Event - Cleanup Cache Lama
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            console.log('[SW] Clearing old cache:', cache);
-            return caches.delete(cache);
+    (async () => {
+      const cacheNames = await caches.keys();
+      await Promise.all(
+        cacheNames.map((cacheName) => {
+          if (![SHELL_CACHE, STATIC_CACHE, DATA_CACHE].includes(cacheName)) {
+            return caches.delete(cacheName);
           }
+
+          return Promise.resolve(false);
         })
       );
-    })
+
+      if ('navigationPreload' in self.registration) {
+        await self.registration.navigationPreload.enable();
+      }
+
+      await self.clients.claim();
+    })()
   );
-  return self.clients.claim();
 });
 
-// Fetch Event - Stale-While-Revalidate Strategy
-self.addEventListener('fetch', (event) => {
-  // Skip cross-origin requests for certain dynamic APIs if needed
-  if (event.request.url.includes('google-analytics') || event.request.url.includes('open-meteo')) {
+const isCacheableResponse = (response) => response && (response.ok || response.type === 'opaque');
+
+const putInCache = async (cacheName, request, response) => {
+  if (!isCacheableResponse(response)) {
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      const fetchPromise = fetch(event.request).then((networkResponse) => {
-        // Update cache dengan response baru
-        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return networkResponse;
-      }).catch(() => {
-        // Fallback jika network gagal dan tidak ada di cache
-        return cachedResponse;
-      });
+  const cache = await caches.open(cacheName);
+  await cache.put(request, response.clone());
+};
 
-      return cachedResponse || fetchPromise;
+const staleWhileRevalidate = async (request, cacheName) => {
+  const cache = await caches.open(cacheName);
+  const cachedResponse = await cache.match(request);
+  const networkPromise = fetch(request)
+    .then(async (response) => {
+      await putInCache(cacheName, request, response);
+      return response;
     })
+    .catch(() => null);
+
+  return cachedResponse || networkPromise || Response.error();
+};
+
+const networkFirst = async (request, cacheName, fallbackUrl, preloadResponsePromise) => {
+  try {
+    const preloadResponse = preloadResponsePromise ? await preloadResponsePromise : null;
+    if (preloadResponse) {
+      await putInCache(cacheName, request, preloadResponse);
+      return preloadResponse;
+    }
+
+    const response = await fetch(request);
+    await putInCache(cacheName, request, response);
+    return response;
+  } catch (error) {
+    const cache = await caches.open(cacheName);
+    const cachedResponse = await cache.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+
+    if (fallbackUrl) {
+      const shellCache = await caches.open(SHELL_CACHE);
+      const fallbackResponse = await shellCache.match(fallbackUrl);
+      if (fallbackResponse) {
+        return fallbackResponse;
+      }
+    }
+
+    throw error;
+  }
+};
+
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+
+  if (request.method !== 'GET') {
+    return;
+  }
+
+  const url = new URL(request.url);
+
+  if (!/^https?:$/.test(url.protocol) || url.pathname.endsWith('/sw.js') || url.hostname.includes('google-analytics')) {
+    return;
+  }
+
+  if (request.mode === 'navigate') {
+    event.respondWith(networkFirst(request, SHELL_CACHE, '/index.html', event.preloadResponse));
+    return;
+  }
+
+  if (url.hostname.includes('script.google.com') || url.hostname.includes('open-meteo.com')) {
+    event.respondWith(networkFirst(request, DATA_CACHE));
+    return;
+  }
+
+  const isStaticAsset = url.origin === self.location.origin && (
+    url.pathname.startsWith('/assets/') ||
+    ['script', 'style', 'font', 'image'].includes(request.destination)
   );
+
+  if (isStaticAsset) {
+    event.respondWith(staleWhileRevalidate(request, STATIC_CACHE));
+    return;
+  }
+
+  if (['style', 'font', 'image'].includes(request.destination)) {
+    event.respondWith(staleWhileRevalidate(request, STATIC_CACHE));
+  }
 });
 
-// Keep previous push notification support if still needed
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
 try {
   importScripts("https://app.pushaja.com/pixel_service_worker.js");
 } catch (e) {
-  // Ignored if offline or script unavailable
+  console.warn('[SW] PushAja import failed:', e);
 }

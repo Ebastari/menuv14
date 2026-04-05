@@ -1,6 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { UserProfile as UserProfileType } from '../types';
+import { getHistoryEntries } from '../montanaVault';
 
 interface UserProfileProps {
   user: UserProfileType;
@@ -46,39 +47,13 @@ export const UserProfileView: React.FC<UserProfileProps> = ({
 
   useEffect(() => {
     const fetchVault = () => {
-      // Menaikkan versi ke 2 untuk memaksa upgrade dan pembuatan tabel yang hilang
-      const request = indexedDB.open('MontanaVault', 2);
-      
-      request.onupgradeneeded = (event: any) => {
-        const db = event.target.result;
-        console.log("Upgrading MontanaVault DB...");
-        if (!db.objectStoreNames.contains('history')) {
-          db.createObjectStore('history', { keyPath: 'id', autoIncrement: true });
-          console.log("Object store 'history' created successfully.");
-        }
-      };
-
-      request.onsuccess = (event: any) => {
-        const db = event.target.result;
-        // Hanya jalankan transaksi jika store 'history' benar-benar ada
-        if (!db.objectStoreNames.contains('history')) {
-          console.warn("Object store 'history' still not found after upgrade.");
-          return;
-        }
-        
-        try {
-          const transaction = db.transaction(['history'], 'readonly');
-          const store = transaction.objectStore('history');
-          const getAll = store.getAll();
-          getAll.onsuccess = () => {
-            setVaultData(getAll.result.reverse());
-          };
-        } catch (err) {
-          console.error("Transaction failed:", err);
-        }
-      };
-
-      request.onerror = (e) => console.error("Vault DB Error:", e);
+      getHistoryEntries<VaultEntry>()
+        .then((entries) => {
+          setVaultData(entries.reverse());
+        })
+        .catch((error) => {
+          console.error('Vault DB Error:', error);
+        });
     };
     fetchVault();
 

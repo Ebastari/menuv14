@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import { getHistoryEntries } from '../montanaVault';
 
 interface LogEntry {
   id?: number;
@@ -39,54 +40,16 @@ export const AdminActivityLogs: React.FC<AdminActivityLogsProps> = ({ onClose })
       console.warn("Cloud fetch failed, falling back to local vault:", e);
     }
 
-    // Fallback ke local dengan peningkatan versi ke 2
-    const request = indexedDB.open('MontanaVault', 2);
-
-    request.onupgradeneeded = (event: any) => {
-      const db = event.target.result;
-      console.log("Upgrading MontanaVault DB for Logs...");
-      if (!db.objectStoreNames.contains('history')) {
-        db.createObjectStore('history', { keyPath: 'id', autoIncrement: true });
-        console.log("Object store 'history' created for Logs.");
-      }
-    };
-
-    request.onsuccess = (event: any) => {
-      const db = event.target.result;
-      if (!db.objectStoreNames.contains('history')) {
-        console.warn("Object store 'history' not available in Logs.");
-        setLogs([]);
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const transaction = db.transaction(['history'], 'readonly');
-        const store = transaction.objectStore('history');
-        const getAll = store.getAll();
-        
-        getAll.onsuccess = () => {
-          setLogs(getAll.result.reverse());
-          setSource('local');
-          setLoading(false);
-        };
-
-        getAll.onerror = () => {
-          setLogs([]);
-          setLoading(false);
-        };
-      } catch (err) {
-        console.error("IDB Transaction failed in Logs:", err);
-        setLogs([]);
-        setLoading(false);
-      }
-    };
-
-    request.onerror = (e) => {
-      console.error("Vault DB Error:", e);
-      setLoading(false);
+    try {
+      const localLogs = await getHistoryEntries<LogEntry>();
+      setLogs(localLogs.reverse());
+      setSource('local');
+    } catch (error) {
+      console.error('Vault DB Error:', error);
       setLogs([]);
-    };
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
