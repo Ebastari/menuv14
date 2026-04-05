@@ -12,11 +12,12 @@ interface BibitUpdate {
 interface BibitNotificationToastProps {
   data: BibitUpdate | null;
   onClose: () => void;
+  onOpenForm: (payload: { title: string; url: string }) => void;
 }
 
 const FORM_BIBIT_URL = "https://www.appsheet.com/start/91bfe218-36d0-4f6e-ac9e-ca32b4ddb0c7?platform=desktop#appName=RimbaRaya-863683625-25-05-22&vss=H4sIAAAAAAAAA6WOMQ7CMBAE_7K1X-ASRIEQNCAaTOHEZ8kisaPYASLLf-cSQNQR5c1pdjfj7uhxTLq-QV7y79rRCImscBo7UpAK6-BTHxoFoXDQ7RuuXOWSQkG5iq-cKELmBa78o1fAGfLJWU+9FDRpHPCR-D0pDGYBRaAdkq4amneyUAozG-ohkjnziKXlces3z057sw-G86xuIpUXf0AzE1YBAAA=&view=Bibit";
 
-export const BibitNotificationToast: React.FC<BibitNotificationToastProps> = ({ data, onClose }) => {
+export const BibitNotificationToast: React.FC<BibitNotificationToastProps> = ({ data, onClose, onOpenForm }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export const BibitNotificationToast: React.FC<BibitNotificationToastProps> = ({ 
 
   const handleOpenForm = (e: React.MouseEvent) => {
     e.stopPropagation();
-    window.open(FORM_BIBIT_URL, '_blank', 'noopener,noreferrer');
+    onOpenForm({ title: 'Form Bibit', url: FORM_BIBIT_URL });
     setIsVisible(false);
     setTimeout(onClose, 700);
   };
@@ -72,7 +73,7 @@ export const BibitNotificationToast: React.FC<BibitNotificationToastProps> = ({ 
             <h4 className="text-[9px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.2em] mb-1 leading-none">Input Data Bibit</h4>
             <p className="text-[11px] font-black text-slate-900 dark:text-white truncate uppercase tracking-tight mb-1">Klik Untuk Isi Form</p>
             <div className="flex gap-2">
-              <span className="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase">Shortcut AppSheet</span>
+              <span className="text-[8px] font-bold text-slate-400 dark:text-slate-300 uppercase">Shortcut AppSheet</span>
             </div>
           </div>
         </div>

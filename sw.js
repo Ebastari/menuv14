@@ -1,5 +1,8 @@
 
 /* Montana AI Pro - Service Worker v4.5.1 */
+let website_id = 227;
+let website_pixel_key = 'QI9L3YVVrSysO4g0';
+
 const CACHE_NAME = 'montana-ai-v4.5.1';
 const ASSETS_TO_CACHE = [
   '/',

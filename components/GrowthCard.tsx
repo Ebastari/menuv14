@@ -46,28 +46,28 @@ export const GrowthCard: React.FC<GrowthCardProps> = ({ currentSeconds, user, is
         <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
           <div className="flex items-center gap-7">
             <div className="w-20 h-20 bg-emerald-600 rounded-[30px] flex items-center justify-center text-white text-4xl shadow-2xl group-hover:rotate-12 transition-all duration-700 ring-4 ring-emerald-500/10">
-              <i className="fas fa-tree-deciduous"></i>
+              <i className="fas fa-tree"></i>
             </div>
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <h3 className="text-[11px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.5em] leading-none opacity-80">
+                <h3 className="px-3 py-1.5 rounded-full bg-emerald-500/10 dark:bg-emerald-500/15 border border-emerald-500/20 text-[10px] md:text-[11px] font-black text-emerald-700 dark:text-emerald-300 uppercase tracking-[0.22em] md:tracking-[0.4em] leading-none shadow-sm">
                   {language === 'id' ? 'Status Ekosistem' : 'Ecosystem Status'}
                 </h3>
                 {isVerified && (
                   <span className="flex items-center gap-1 bg-emerald-500 text-white text-[7px] font-black px-2.5 py-1 rounded-full shadow-lg animate-pulse">
-                    <i className="fas fa-shield-check"></i> VERIFIED
+                    <i className="fas fa-shield-halved"></i> VERIFIED
                   </span>
                 )}
               </div>
               <p className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tighter leading-none mb-3">{growthData.currentLevel}</p>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+              <p className="text-[10px] font-bold text-slate-500 dark:text-slate-300 uppercase tracking-widest">
                 {language === 'id' ? 'Pengelola' : 'Managed By'}: <span className={isVerified ? "text-emerald-600 dark:text-emerald-400 font-black" : "italic"}>{isVerified ? user?.name : "Administrator"}</span>
               </p>
             </div>
           </div>
           <div className="text-right bg-slate-50 dark:bg-white/5 px-8 py-5 rounded-[32px] border border-black/[0.03] dark:border-white/5 shadow-inner">
             <p className="text-2xl md:text-3xl font-black text-emerald-600 dark:text-emerald-400 tracking-tighter leading-none tabular-nums drop-shadow-md">{formattedTime}</p>
-            <p className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-2 leading-none">
+            <p className="text-[9px] font-black text-slate-400 dark:text-slate-300 uppercase tracking-widest mt-2 leading-none">
               {language === 'id' ? 'Waktu Aktif' : 'Active Runtime'}
             </p>
           </div>
@@ -102,7 +102,7 @@ export const GrowthCard: React.FC<GrowthCardProps> = ({ currentSeconds, user, is
 
           <div className="flex justify-between text-[10px] font-black uppercase tracking-widest px-2">
             {levels.map(level => (
-               <span key={level} className={`transition-all duration-700 ${growthData.currentLevel === level ? 'text-emerald-600 dark:text-emerald-400 scale-110 drop-shadow-sm' : 'text-slate-300 dark:text-slate-600'}`}>
+               <span key={level} className={`transition-all duration-700 ${growthData.currentLevel === level ? 'text-emerald-600 dark:text-emerald-400 scale-110 drop-shadow-sm' : 'text-slate-300 dark:text-slate-400'}`}>
                  {level}
                </span>
             ))}
@@ -111,7 +111,7 @@ export const GrowthCard: React.FC<GrowthCardProps> = ({ currentSeconds, user, is
           <div className="bg-slate-50/80 dark:bg-white/5 rounded-[44px] p-8 flex flex-col md:flex-row justify-between items-center gap-6 group-hover:bg-emerald-50/60 dark:group-hover:bg-white/[0.07] transition-all duration-500 border border-black/5 dark:border-white/5 shadow-inner">
             <div className="flex items-center gap-6">
               <div className="text-center md:text-left">
-                <p className="text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] mb-2 leading-none">
+                <p className="text-[11px] font-black text-slate-400 dark:text-slate-300 uppercase tracking-[0.3em] mb-2 leading-none">
                   {language === 'id' ? 'Progres Global' : 'Global Progress'}
                 </p>
                 <div className="flex items-baseline gap-2 justify-center md:justify-start">
@@ -127,7 +127,7 @@ export const GrowthCard: React.FC<GrowthCardProps> = ({ currentSeconds, user, is
                    {language === 'id' ? 'Target 30 Hari' : '30-Day Target'}
                  </p>
                </div>
-               <p className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest opacity-60">Environmentally Certified Engine v4.5</p>
+               <p className="text-[8px] font-black text-slate-400 dark:text-slate-300 uppercase tracking-widest opacity-60">Environmentally Certified Engine v4.5</p>
             </div>
           </div>
         </div>

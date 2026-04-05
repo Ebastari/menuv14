@@ -95,14 +95,14 @@ export const RosterWidget: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8 animate-drift-puff">
-      <div className="flex flex-col gap-6">
+    <div className="space-y-5 md:space-y-8 animate-drift-puff">
+      <div className="flex flex-col gap-4 md:gap-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex flex-col">
-            <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight leading-none">
+            <h1 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight leading-none">
               Tim <span className="text-emerald-600">Revegetasi</span>
             </h1>
-            <p className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-widest mt-2">{displayedDateLabel}</p>
+            <p className="text-[10px] md:text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-widest mt-1.5 md:mt-2">{displayedDateLabel}</p>
           </div>
           <div className="relative group">
             <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-emerald-600 transition-colors"></i>
@@ -111,67 +111,67 @@ export const RosterWidget: React.FC = () => {
               placeholder="Cari personil tim..." 
               value={search}
               onChange={(e) => setSearch(search)}
-              className="pl-11 pr-5 py-3.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl text-[12px] font-bold focus:ring-2 focus:ring-emerald-500/40 outline-none w-full md:w-72 transition-all text-slate-900 dark:text-white shadow-sm"
+              className="pl-10 pr-4 py-3 md:py-3.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl md:rounded-2xl text-[11px] md:text-[12px] font-bold focus:ring-2 focus:ring-emerald-500/40 outline-none w-full md:w-72 transition-all text-slate-900 dark:text-white shadow-sm"
             />
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 md:gap-4">
           {[
             { label: 'Shift Siang', val: stats.d, color: 'emerald' },
             { label: 'Tahura-DAS', val: stats.thr, color: 'orange' },
             { label: 'Total Crew', val: stats.total, color: 'slate' },
             { label: 'Libur (OFF)', val: stats.off, color: 'rose' }
           ].map(s => (
-            <div key={s.label} className={`bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-[32px] shadow-sm`}>
-              <p className={`text-${s.color}-700 dark:text-${s.color}-400 text-[10px] font-bold uppercase tracking-widest mb-2 leading-none`}>{s.label}</p>
-              <h2 className="text-3xl font-black text-slate-900 dark:text-white tabular-nums">{s.val}</h2>
+            <div key={s.label} className={`bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3.5 md:p-6 rounded-[20px] md:rounded-[32px] shadow-sm`}>
+              <p className={`text-${s.color}-700 dark:text-${s.color}-400 text-[8px] md:text-[10px] font-bold uppercase tracking-[0.16em] md:tracking-widest mb-1.5 md:mb-2 leading-none`}>{s.label}</p>
+              <h2 className="text-xl md:text-3xl font-black text-slate-900 dark:text-white tabular-nums">{s.val}</h2>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="flex gap-8 border-b border-slate-300 dark:border-slate-800 px-4">
-        <button onClick={() => setView('today')} className={`pb-4 text-[12px] font-bold uppercase tracking-widest transition-all relative ${view === 'today' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-600 dark:text-slate-400'}`}>
+      <div className="flex gap-5 md:gap-8 border-b border-slate-300 dark:border-slate-800 px-1 md:px-4 overflow-x-auto no-scrollbar">
+        <button onClick={() => setView('today')} className={`pb-3 md:pb-4 text-[10px] md:text-[12px] font-bold uppercase tracking-[0.16em] md:tracking-widest transition-all relative whitespace-nowrap ${view === 'today' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-600 dark:text-slate-400'}`}>
           Hari Ini
           {view === 'today' && <div className="absolute bottom-0 left-0 right-0 h-1 bg-emerald-600 rounded-full animate-fadeIn"></div>}
         </button>
-        <button onClick={() => setView('full')} className={`pb-4 text-[12px] font-bold uppercase tracking-widest transition-all relative ${view === 'full' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-600 dark:text-slate-400'}`}>
+        <button onClick={() => setView('full')} className={`pb-3 md:pb-4 text-[10px] md:text-[12px] font-bold uppercase tracking-[0.16em] md:tracking-widest transition-all relative whitespace-nowrap ${view === 'full' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-600 dark:text-slate-400'}`}>
           Seluruh Jadwal (Cycle)
           {view === 'full' && <div className="absolute bottom-0 left-0 right-0 h-1 bg-emerald-600 rounded-full animate-fadeIn"></div>}
         </button>
       </div>
 
       {view === 'today' ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-5">
           {filteredTeam.map(p => (
             <div 
               key={p.id}
               onClick={() => setSelectedMemberId(selectedMemberId === p.id ? null : p.id)}
-              className="bg-white dark:bg-slate-900 p-6 rounded-[32px] border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-5 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group"
+              className="bg-white dark:bg-slate-900 p-3.5 md:p-6 rounded-[20px] md:rounded-[32px] border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-3 md:gap-5 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group"
             >
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-black text-sm shadow-lg group-hover:rotate-6 transition-transform" style={{ backgroundColor: p.color }}>
+              <div className="w-11 h-11 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center text-white font-black text-[11px] md:text-sm shadow-lg group-hover:rotate-6 transition-transform" style={{ backgroundColor: p.color }}>
                 {getInitials(p.nama)}
               </div>
               <div className="flex-1 min-w-0">
-                <h4 className="font-bold text-slate-900 dark:text-white text-[15px] truncate">{p.nama}</h4>
-                <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-widest mt-1 truncate">{p.jabatan}</p>
+                <h4 className="font-bold text-slate-900 dark:text-white text-[13px] md:text-[15px] truncate">{p.nama}</h4>
+                <p className="text-[9px] md:text-[11px] font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-[0.14em] md:tracking-widest mt-0.5 md:mt-1 truncate">{p.jabatan}</p>
               </div>
-              <div className={`px-4 py-1.5 rounded-xl text-[10px] font-bold uppercase tracking-widest ${getShiftColorClass(p.currentShift)}`}>
+              <div className={`px-2.5 md:px-4 py-1 md:py-1.5 rounded-lg md:rounded-xl text-[8px] md:text-[10px] font-bold uppercase tracking-[0.14em] md:tracking-widest ${getShiftColorClass(p.currentShift)}`}>
                 {p.currentShift}
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <div className="overflow-hidden bg-white dark:bg-slate-900 rounded-[40px] border border-slate-200 dark:border-slate-800 shadow-2xl">
+        <div className="overflow-hidden bg-white dark:bg-slate-900 rounded-[24px] md:rounded-[40px] border border-slate-200 dark:border-slate-800 shadow-xl md:shadow-2xl">
           <div className="overflow-x-auto no-scrollbar">
             <table className="w-full text-left">
               <thead>
                 <tr className="bg-slate-100 dark:bg-slate-800 border-b border-slate-300 dark:border-slate-700">
-                  <th className="p-6 text-[11px] font-black text-slate-800 dark:text-slate-200 uppercase tracking-widest sticky left-0 bg-slate-100 dark:bg-slate-800 z-10 border-r dark:border-slate-700">Anggota Tim</th>
+                  <th className="p-3 md:p-6 text-[9px] md:text-[11px] font-black text-slate-800 dark:text-slate-200 uppercase tracking-[0.16em] md:tracking-widest sticky left-0 bg-slate-100 dark:bg-slate-800 z-10 border-r dark:border-slate-700">Anggota Tim</th>
                   {calendarDays.map((day, i) => (
-                    <th key={i} className={`p-4 text-[10px] font-black text-center min-w-[55px] ${day.isToday ? 'text-emerald-600 bg-emerald-500/10' : 'text-slate-600 dark:text-slate-400'}`}>
+                    <th key={i} className={`p-2.5 md:p-4 text-[9px] md:text-[10px] font-black text-center min-w-[44px] md:min-w-[55px] ${day.isToday ? 'text-emerald-600 bg-emerald-500/10' : 'text-slate-600 dark:text-slate-400'}`}>
                       {day.label}
                     </th>
                   ))}
@@ -180,17 +180,17 @@ export const RosterWidget: React.FC = () => {
               <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                 {filteredTeam.map((p, idx) => (
                   <tr key={p.id} className={`${idx % 2 === 0 ? 'bg-transparent' : 'bg-slate-50 dark:bg-white/[0.03]'} hover:bg-emerald-50 dark:hover:bg-emerald-500/10 transition-colors`}>
-                    <td className="p-6 sticky left-0 bg-inherit z-10 border-r border-slate-200 dark:border-slate-800">
-                      <div className="flex items-center gap-4">
-                        <div className="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-black text-white" style={{ backgroundColor: p.color }}>{getInitials(p.nama)}</div>
-                        <p className="text-[11px] font-bold text-slate-900 dark:text-white uppercase truncate max-w-[120px]">{p.nama}</p>
+                    <td className="p-3 md:p-6 sticky left-0 bg-inherit z-10 border-r border-slate-200 dark:border-slate-800">
+                      <div className="flex items-center gap-2 md:gap-4">
+                        <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg flex items-center justify-center text-[9px] md:text-[10px] font-black text-white" style={{ backgroundColor: p.color }}>{getInitials(p.nama)}</div>
+                        <p className="text-[10px] md:text-[11px] font-bold text-slate-900 dark:text-white uppercase truncate max-w-[96px] md:max-w-[120px]">{p.nama}</p>
                       </div>
                     </td>
                     {calendarDays.map((day, i) => {
                       const shift = p.shifts[getIndexForDate(day.date, p.shifts)];
                       return (
-                        <td key={i} className={`p-4 text-center ${day.isToday ? 'bg-emerald-500/10' : ''}`}>
-                          <span className={`text-[10px] font-black ${shift === 'D' ? 'text-emerald-700 dark:text-emerald-400' : (shift === 'THR' ? 'text-orange-700 dark:text-orange-400' : 'text-slate-400 dark:text-slate-600')}`}>
+                        <td key={i} className={`p-2.5 md:p-4 text-center ${day.isToday ? 'bg-emerald-500/10' : ''}`}>
+                          <span className={`text-[9px] md:text-[10px] font-black ${shift === 'D' ? 'text-emerald-700 dark:text-emerald-400' : (shift === 'THR' ? 'text-orange-700 dark:text-orange-400' : 'text-slate-400 dark:text-slate-300')}`}>
                             {shift}
                           </span>
                         </td>

@@ -11,7 +11,7 @@ const SUMMARY_CARDS = (lang: 'id' | 'en') => [
   {
     id: 'verif',
     title: lang === 'id' ? 'Standarisasi Verifikasi' : 'Verification Standards',
-    icon: 'fa-shield-check',
+    icon: 'fa-shield-halved',
     desc: lang === 'id' ? 'Menghilangkan fraud metadata dan duplikasi data lapangan dengan geotagging tervalidasi.' : 'Eliminating metadata fraud and field data duplication with validated geotagging.'
   },
   {
@@ -41,47 +41,47 @@ export const SystemHistory: React.FC<SystemHistoryProps> = ({ language = 'id' })
   };
 
   return (
-    <section className="space-y-16 py-12">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 px-4">
+    <section className="space-y-10 md:space-y-16 py-8 md:py-12">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6 px-1 md:px-4">
         <div className="flex flex-col">
-          <h3 className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.4em] mb-4">Archival Intelligence</h3>
-          <p className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter leading-none uppercase">
+          <h3 className="text-[9px] md:text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.28em] md:tracking-[0.4em] mb-2 md:mb-4">Archival Intelligence</h3>
+          <p className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tighter leading-none uppercase">
             {language === 'id' ? 'Evolusi & ' : 'Evolution & '}<span className="text-emerald-600">{language === 'id' ? 'History Sistem' : 'System History'}</span>
           </p>
         </div>
-        <p className="text-[12px] font-semibold text-slate-700 dark:text-slate-300 max-w-sm text-left md:text-right leading-relaxed">
+        <p className="text-[11px] md:text-[12px] font-semibold text-slate-700 dark:text-slate-300 max-w-sm text-left md:text-right leading-relaxed">
           {language === 'id' ? 'Memahami perjalanan transformasi dari proses konvensional menuju kedaulatan data berbasis AI Montana Pro.' : 'Understanding the transformation journey from conventional processes to AI-based data sovereignty.'}
         </p>
       </div>
 
       {!isNarrativeVisible ? (
-        <div className="space-y-12 animate-fadeIn">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="space-y-6 md:space-y-12 animate-fadeIn">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-8">
             {SUMMARY_CARDS(language as 'id' | 'en').map((card) => (
-              <div key={card.id} className="bg-white dark:bg-slate-900 p-10 rounded-[44px] border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-xl transition-all group">
-                <div className="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-2xl text-slate-600 dark:text-slate-300 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors mb-6 shadow-inner">
+              <div key={card.id} className="bg-white dark:bg-slate-900 p-4 md:p-10 rounded-[22px] md:rounded-[44px] border border-slate-200 dark:border-white/10 shadow-sm hover:shadow-xl transition-all group ring-1 ring-black/5 dark:ring-white/5">
+                <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/15 flex items-center justify-center text-lg md:text-2xl text-emerald-700 dark:text-emerald-300 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors mb-3 md:mb-6 shadow-inner border border-emerald-500/10">
                   <i className={`fas ${card.icon}`}></i>
                 </div>
-                <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">{card.title}</h4>
-                <p className="text-[13px] leading-relaxed text-slate-700 dark:text-slate-200 font-medium">{card.desc}</p>
+                <h4 className="text-base md:text-xl font-black text-slate-950 dark:text-white mb-2 md:mb-3 tracking-tight">{card.title}</h4>
+                <p className="text-[11px] md:text-[13px] leading-relaxed text-slate-700 dark:text-slate-200 font-semibold">{card.desc}</p>
               </div>
             ))}
           </div>
 
           <div className="relative group cursor-pointer" onClick={toggleNarrative}>
             <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-[48px] blur opacity-10 group-hover:opacity-25 transition duration-1000"></div>
-            <div className="relative bg-slate-900 dark:bg-slate-800 rounded-[48px] p-16 text-center overflow-hidden">
+            <div className="relative bg-slate-900 dark:bg-slate-800 rounded-[24px] md:rounded-[48px] p-6 md:p-16 text-center overflow-hidden">
                <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5"></div>
-               <div className="relative z-10 space-y-6">
-                  <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/20">
-                    <i className="fas fa-scroll text-3xl text-emerald-400"></i>
+               <div className="relative z-10 space-y-4 md:space-y-6">
+                  <div className="w-14 h-14 md:w-20 md:h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-4 border border-white/20">
+                    <i className="fas fa-scroll text-xl md:text-3xl text-emerald-400"></i>
                   </div>
-                  <h3 className="text-3xl font-bold text-white uppercase tracking-tighter">{language === 'id' ? 'Buka Arsip Sejarah Digital' : 'Open Digital History Archive'}</h3>
-                  <p className="text-base text-slate-200 max-w-2xl mx-auto font-medium leading-relaxed">
+                  <h3 className="text-xl md:text-3xl font-bold text-white uppercase tracking-tighter">{language === 'id' ? 'Buka Arsip Sejarah Digital' : 'Open Digital History Archive'}</h3>
+                  <p className="text-[12px] md:text-base text-slate-200 max-w-2xl mx-auto font-medium leading-relaxed">
                     {language === 'id' ? 'Klik untuk mengeksplorasi narasi mendalam mengenai latar belakang, dampak masalah, dan analisis QCDSM yang melandasi pengembangan Montana AI Pro.' : 'Click to explore deep narratives about the background, impacts, and QCDSM analysis behind Montana AI Pro development.'}
                   </p>
-                  <div className="pt-6">
-                    <span className="inline-block px-12 py-5 bg-emerald-600 text-white rounded-3xl text-[12px] font-black uppercase tracking-widest group-hover:scale-105 transition-transform active:scale-95 shadow-2xl">
+                  <div className="pt-2 md:pt-6">
+                    <span className="inline-block px-6 md:px-12 py-3 md:py-5 bg-emerald-600 text-white rounded-2xl md:rounded-3xl text-[10px] md:text-[12px] font-black uppercase tracking-[0.18em] md:tracking-widest group-hover:scale-105 transition-transform active:scale-95 shadow-2xl">
                       {language === 'id' ? 'Eksplorasi Sekarang' : 'Explore Now'}
                     </span>
                   </div>
@@ -130,7 +130,7 @@ export const SystemHistory: React.FC<SystemHistoryProps> = ({ language = 'id' })
                   ].map(item => (
                     <div key={item.id} className="space-y-5">
                       <h4 className="text-2xl font-bold text-emerald-700 dark:text-emerald-400 tracking-tight flex items-center gap-4">
-                        <span className="text-slate-300 dark:text-slate-700 text-3xl font-black">{item.id}.</span> {item.title}
+                        <span className="text-slate-300 dark:text-slate-500 text-3xl font-black">{item.id}.</span> {item.title}
                       </h4>
                       <p className="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100 leading-relaxed text-justify">
                         {item.body}

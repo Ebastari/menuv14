@@ -15,7 +15,7 @@ export const GlobalFooter: React.FC<GlobalFooterProps> = ({ onOpenMontanaProfile
         {/* Decorative Quote Section */}
         <div className="flex flex-col items-center mb-12 group">
           <div className="w-px h-12 bg-gradient-to-b from-transparent to-slate-200 dark:to-slate-800 mb-6"></div>
-          <p className="text-[12px] md:text-[14px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.8em] transition-all group-hover:tracking-[1em] duration-1000">
+          <p className="text-[12px] md:text-[14px] font-black text-slate-400 dark:text-slate-300 uppercase tracking-[0.8em] transition-all group-hover:tracking-[1em] duration-1000">
             “Urip kudu urup.”
           </p>
           <div className="w-px h-6 bg-gradient-to-t from-transparent to-slate-200 dark:to-slate-800 mt-6"></div>
@@ -66,7 +66,7 @@ export const GlobalFooter: React.FC<GlobalFooterProps> = ({ onOpenMontanaProfile
           <div className="w-full h-px bg-gradient-to-r from-transparent via-slate-100 dark:via-slate-800 to-transparent"></div>
 
           <div className="flex flex-col items-center gap-4 text-center">
-            <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em]">
+            <p className="text-[10px] font-black text-slate-400 dark:text-slate-300 uppercase tracking-[0.3em]">
               Hak Cipta © 2026 PT Montana Wana Teknologi
             </p>
             <div className="flex items-center gap-3 bg-slate-50 dark:bg-black/20 px-4 py-1.5 rounded-full border border-black/5 dark:border-white/5">

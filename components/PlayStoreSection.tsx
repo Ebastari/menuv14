@@ -1,9 +1,94 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-export const PlayStoreSection: React.FC = () => {
+interface PlayStoreSectionProps {
+  isAuthenticated: boolean;
+  onRequestLogin: () => void;
+}
+
+export const PlayStoreSection: React.FC<PlayStoreSectionProps> = ({ isAuthenticated, onRequestLogin }) => {
   const playStoreLink = "https://play.google.com/store/apps/details?id=com.laksa.mymontanaai";
   const webLink = "https://montana-tech.info/";
   const liteLink = "lite.html"; // Menggunakan path relatif agar aman di berbagai environment
+  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission | 'unsupported'>('default');
+  const [isNotificationLoading, setIsNotificationLoading] = useState(false);
+
+  useEffect(() => {
+    if (!(typeof window !== 'undefined' && 'Notification' in window)) {
+      setNotificationPermission('unsupported');
+      return;
+    }
+
+    setNotificationPermission(Notification.permission);
+  }, []);
+
+  const handleLiteAccess = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (isAuthenticated) {
+      return;
+    }
+
+    event.preventDefault();
+    onRequestLogin();
+  };
+
+  const handleWebAccess = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (isAuthenticated) {
+      return;
+    }
+
+    event.preventDefault();
+    onRequestLogin();
+  };
+
+  const handleEnableNotifications = async () => {
+    if (!(typeof window !== 'undefined' && 'Notification' in window)) {
+      setNotificationPermission('unsupported');
+      return;
+    }
+
+    if (!window.isSecureContext) {
+      window.alert('Notifikasi browser hanya bisa diaktifkan dari domain HTTPS atau localhost.');
+      return;
+    }
+
+    setIsNotificationLoading(true);
+
+    try {
+      if ('serviceWorker' in navigator) {
+        await navigator.serviceWorker.register('/sw.js');
+        await navigator.serviceWorker.ready;
+      }
+
+      const permission = await Notification.requestPermission();
+      setNotificationPermission(permission);
+
+      if (permission === 'granted') {
+        window.alert('Notifikasi Montana AI berhasil diaktifkan di browser ini.');
+      } else if (permission === 'denied') {
+        window.alert('Izin notifikasi ditolak. Aktifkan kembali dari pengaturan browser jika diperlukan.');
+      }
+    } catch (error) {
+      console.warn('Notification activation failed:', error);
+      window.alert('Aktivasi notifikasi belum berhasil. Coba lagi beberapa saat.');
+    } finally {
+      setIsNotificationLoading(false);
+    }
+  };
+
+  const notificationLabel = notificationPermission === 'granted'
+    ? 'Notifikasi Aktif'
+    : notificationPermission === 'denied'
+      ? 'Izin Notifikasi Ditolak'
+      : notificationPermission === 'unsupported'
+        ? 'Browser Tidak Mendukung'
+        : 'Aktifkan Notifikasi';
+
+  const notificationHelperText = notificationPermission === 'granted'
+    ? 'Perangkat ini siap menerima update Montana AI saat ada pengiriman push.'
+    : notificationPermission === 'denied'
+      ? 'Buka pengaturan browser untuk mengizinkan notifikasi Montana AI lagi.'
+      : notificationPermission === 'unsupported'
+        ? 'Gunakan Chrome/Edge di Android atau instal web app di iPhone untuk dukungan terbaik.'
+        : 'Izinkan notifikasi agar update nursery dan monitoring bisa masuk ke HP Anda.';
 
   return (
     <section className="px-6 py-12 max-w-[1440px] mx-auto animate-fadeIn">
@@ -67,24 +152,48 @@ export const PlayStoreSection: React.FC = () => {
               </p>
               
               <div className="flex flex-col gap-3">
+                <button
+                  type="button"
+                  onClick={handleEnableNotifications}
+                  disabled={isNotificationLoading || notificationPermission === 'unsupported'}
+                  className={`flex items-center justify-center gap-3 px-6 py-4 rounded-2xl border text-[10px] font-black uppercase tracking-widest transition-all shadow-xl ${notificationPermission === 'granted' ? 'bg-emerald-500 text-white border-emerald-400' : 'bg-sky-500/20 hover:bg-sky-500 text-white border-sky-400/40'} disabled:cursor-not-allowed disabled:opacity-60`}
+                >
+                  <i className={`fas ${isNotificationLoading ? 'fa-circle-notch animate-spin' : notificationPermission === 'granted' ? 'fa-bell' : 'fa-bell-concierge'}`}></i>
+                  {isNotificationLoading ? 'Memproses...' : notificationLabel}
+                </button>
+
+                <p className="text-[8px] font-black text-sky-100/80 uppercase tracking-[0.16em] leading-relaxed">
+                  {notificationHelperText}
+                </p>
+
                 <a 
                   href={webLink} 
                   target="_blank" 
                   rel="noopener noreferrer"
+                  onClick={handleWebAccess}
+                  aria-label={isAuthenticated ? 'Buka versi web' : 'Login diperlukan untuk versi web'}
                   className="flex items-center justify-center gap-3 px-6 py-4 bg-white/10 hover:bg-white/20 text-white rounded-2xl border border-white/10 text-[10px] font-black uppercase tracking-widest transition-all shadow-lg"
                 >
-                  <i className="fas fa-globe"></i>
+                  <i className={`fas ${isAuthenticated ? 'fa-globe' : 'fa-lock'}`}></i>
                   Versi Web : Montana-Tech.info
                 </a>
 
                 <a 
                   href={liteLink} 
+                  onClick={handleLiteAccess}
+                  aria-label={isAuthenticated ? 'Buka versi lite' : 'Login diperlukan untuk versi lite'}
                   className="flex items-center justify-center gap-3 px-6 py-4 bg-emerald-600/20 hover:bg-emerald-600 text-white rounded-2xl border border-emerald-500/30 text-[10px] font-black uppercase tracking-widest transition-all group/lite relative overflow-hidden shadow-xl"
                 >
                   <div className="absolute inset-0 bg-emerald-500/10 animate-pulse opacity-50"></div>
-                  <i className="fas fa-bolt-lightning text-emerald-400 group-hover/lite:text-white transition-colors relative z-10"></i>
-                  <span className="relative z-10">Versi Lite : Akses Menu Cepat</span>
+                  <i className={`fas ${isAuthenticated ? 'fa-bolt-lightning' : 'fa-lock'} text-emerald-400 group-hover/lite:text-white transition-colors relative z-10`}></i>
+                  <span className="relative z-10">Versi Lama : Akses Menu Cepat</span>
                 </a>
+
+                {!isAuthenticated && (
+                  <p className="text-[8px] font-black text-amber-300 uppercase tracking-[0.18em]">
+                    Login diperlukan untuk membuka versi lite
+                  </p>
+                )}
               </div>
             </div>
           </div>

@@ -3,28 +3,28 @@ import React from 'react';
 
 export const KnowledgeCenter: React.FC = () => {
   return (
-    <section className="px-6 py-24 max-w-[1440px] mx-auto space-y-32 animate-fadeIn">
+    <section className="px-3 md:px-6 py-12 md:py-24 max-w-[1440px] mx-auto space-y-14 md:space-y-32 animate-fadeIn">
       
       {/* HEADER: NARASI UTAMA */}
       <div className="relative group">
-        <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-blue-500/20 rounded-[56px] blur-2xl opacity-50 group-hover:opacity-100 transition duration-1000"></div>
-        <div className="relative bg-white dark:bg-slate-900 rounded-[56px] p-12 md:p-20 border border-white/50 dark:border-slate-800 shadow-2xl text-center">
-          <div className="max-w-4xl mx-auto space-y-10">
-            <div className="inline-flex items-center gap-3 px-6 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
+        <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-blue-500/20 rounded-[28px] md:rounded-[56px] blur-2xl opacity-50 group-hover:opacity-100 transition duration-1000"></div>
+        <div className="relative bg-white dark:bg-slate-900 rounded-[28px] md:rounded-[56px] p-5 md:p-20 border border-white/50 dark:border-slate-800 shadow-xl md:shadow-2xl text-center">
+          <div className="max-w-4xl mx-auto space-y-5 md:space-y-10">
+            <div className="inline-flex items-center gap-2 md:gap-3 px-4 md:px-6 py-1.5 md:py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <p className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.4em]">Strategic Corporate Narrative</p>
+              <p className="text-[7px] md:text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.18em] md:tracking-[0.4em]">Strategic Corporate Narrative</p>
             </div>
             
-            <h2 className="text-3xl md:text-6xl font-black text-slate-900 dark:text-white uppercase tracking-tighter leading-[0.95]">
+            <h2 className="text-xl md:text-6xl font-black text-slate-900 dark:text-white uppercase tracking-tighter leading-[1] md:leading-[0.95]">
               Narasi Sistem Montana AI <br /> <span className="text-emerald-600">Smart Land Reclamation</span>
             </h2>
             
-            <p className="text-lg md:text-2xl font-medium text-slate-600 dark:text-slate-300 leading-relaxed max-w-3xl mx-auto">
+            <p className="text-[12px] md:text-2xl font-medium text-slate-600 dark:text-slate-300 leading-relaxed max-w-3xl mx-auto">
               Montana AI merupakan platform digital cerdas yang dirancang untuk mendukung kegiatan reklamasi lahan, pengelolaan nursery, serta pemantauan pertumbuhan tanaman secara terintegrasi dan berbasis data real-time.
             </p>
 
-            <div className="pt-8 flex flex-col items-center gap-4 text-slate-400 dark:text-slate-500">
-               <p className="text-[10px] font-black uppercase tracking-widest max-w-2xl mx-auto italic">
+            <div className="pt-2 md:pt-8 flex flex-col items-center gap-3 md:gap-4 text-slate-400 dark:text-slate-300">
+               <p className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.14em] md:tracking-widest max-w-2xl mx-auto italic">
                  Sistem ini hadir sebagai solusi atas tantangan utama dalam kegiatan revegetasi dan reklamasi, seperti akurasi data lapangan serta keterbatasan monitoring berkelanjutan.
                </p>
             </div>
@@ -32,71 +32,71 @@ export const KnowledgeCenter: React.FC = () => {
         </div>
       </div>
 
-      {/* GRID FITUR: MANAJEMEN & MONITORING */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* FITUR: MOBILE HORIZONTAL, DESKTOP GRID */}
+      <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-8 overflow-x-auto no-scrollbar pb-1 md:pb-0">
         
         {/* Manajemen Bibit */}
-        <div className="bg-white dark:bg-slate-900 p-10 rounded-[44px] border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all duration-500 group">
-          <div className="w-14 h-14 bg-emerald-500/10 text-emerald-600 rounded-2xl flex items-center justify-center text-xl mb-8 group-hover:rotate-6 transition-transform">
+        <div className="min-w-[31%] md:min-w-0 bg-white dark:bg-slate-900 p-3 md:p-10 rounded-[18px] md:rounded-[44px] border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all duration-500 group shrink-0">
+          <div className="w-9 h-9 md:w-14 md:h-14 bg-emerald-500/10 text-emerald-600 rounded-xl md:rounded-2xl flex items-center justify-center text-sm md:text-xl mb-3 md:mb-8 group-hover:rotate-6 transition-transform mx-auto md:mx-0">
             <i className="fas fa-seedling"></i>
           </div>
-          <h4 className="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight mb-4 leading-tight">Manajemen Bibit Terpadu</h4>
-          <p className="text-[13px] leading-relaxed text-slate-600 dark:text-slate-400 font-medium">
+          <h4 className="text-[10px] md:text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight mb-2 md:mb-4 leading-tight text-center md:text-left">Manajemen Bibit Terpadu</h4>
+          <p className="hidden md:block text-[13px] leading-relaxed text-slate-600 dark:text-slate-400 font-medium">
             Sistem yang terhubung langsung dengan Google Sheets dan AppSheet, memastikan seluruh data stok, distribusi, dan penanaman bibit tercatat secara otomatis dan akurat.
           </p>
         </div>
 
         {/* Pemantauan Kamera & Sensor */}
-        <div className="bg-white dark:bg-slate-900 p-10 rounded-[44px] border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all duration-500 group">
-          <div className="w-14 h-14 bg-blue-500/10 text-blue-600 rounded-2xl flex items-center justify-center text-xl mb-8 group-hover:rotate-6 transition-transform">
+        <div className="min-w-[31%] md:min-w-0 bg-white dark:bg-slate-900 p-3 md:p-10 rounded-[18px] md:rounded-[44px] border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all duration-500 group shrink-0">
+          <div className="w-9 h-9 md:w-14 md:h-14 bg-blue-500/10 text-blue-600 rounded-xl md:rounded-2xl flex items-center justify-center text-sm md:text-xl mb-3 md:mb-8 group-hover:rotate-6 transition-transform mx-auto md:mx-0">
             <i className="fas fa-camera"></i>
           </div>
-          <h4 className="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight mb-4 leading-tight">Pemantauan Berbasis Kamera & Sensor</h4>
-          <p className="text-[13px] leading-relaxed text-slate-600 dark:text-slate-400 font-medium">
+          <h4 className="text-[10px] md:text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight mb-2 md:mb-4 leading-tight text-center md:text-left">Pemantauan Berbasis Kamera & Sensor</h4>
+          <p className="hidden md:block text-[13px] leading-relaxed text-slate-600 dark:text-slate-400 font-medium">
             Integrasi kamera Montana V2 dan sensor tinggi memungkinkan dokumentasi digital titik tanam lengkap dengan koordinat GPS, foto kondisi, serta data pertumbuhan berkala.
           </p>
         </div>
 
         {/* Analisis AI */}
-        <div className="bg-white dark:bg-slate-900 p-10 rounded-[44px] border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all duration-500 group">
-          <div className="w-14 h-14 bg-amber-500/10 text-amber-600 rounded-2xl flex items-center justify-center text-xl mb-8 group-hover:rotate-6 transition-transform">
+        <div className="min-w-[31%] md:min-w-0 bg-white dark:bg-slate-900 p-3 md:p-10 rounded-[18px] md:rounded-[44px] border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all duration-500 group shrink-0">
+          <div className="w-9 h-9 md:w-14 md:h-14 bg-amber-500/10 text-amber-600 rounded-xl md:rounded-2xl flex items-center justify-center text-sm md:text-xl mb-3 md:mb-8 group-hover:rotate-6 transition-transform mx-auto md:mx-0">
             <i className="fas fa-microchip"></i>
           </div>
-          <h4 className="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight mb-4 leading-tight">Analisis Kesehatan Berbasis AI</h4>
-          <p className="text-[13px] leading-relaxed text-slate-600 dark:text-slate-400 font-medium">
+          <h4 className="text-[10px] md:text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight mb-2 md:mb-4 leading-tight text-center md:text-left">Analisis Kesehatan Berbasis AI</h4>
+          <p className="hidden md:block text-[13px] leading-relaxed text-slate-600 dark:text-slate-400 font-medium">
             Teknologi computer vision mendeteksi gejala penyakit, kekurangan nutrisi, maupun stres lingkungan sejak dini untuk memberikan rekomendasi perawatan yang tepat.
           </p>
         </div>
 
         {/* Chatbot AI */}
-        <div className="bg-white dark:bg-slate-900 p-10 rounded-[44px] border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all duration-500 group">
-          <div className="w-14 h-14 bg-purple-500/10 text-purple-600 rounded-2xl flex items-center justify-center text-xl mb-8 group-hover:rotate-6 transition-transform">
+        <div className="min-w-[31%] md:min-w-0 bg-white dark:bg-slate-900 p-3 md:p-10 rounded-[18px] md:rounded-[44px] border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all duration-500 group shrink-0">
+          <div className="w-9 h-9 md:w-14 md:h-14 bg-purple-500/10 text-purple-600 rounded-xl md:rounded-2xl flex items-center justify-center text-sm md:text-xl mb-3 md:mb-8 group-hover:rotate-6 transition-transform mx-auto md:mx-0">
             <i className="fas fa-robot"></i>
           </div>
-          <h4 className="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight mb-4 leading-tight">Pelaporan Digital & Chatbot AI</h4>
-          <p className="text-[13px] leading-relaxed text-slate-600 dark:text-slate-400 font-medium">
+          <h4 className="text-[10px] md:text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight mb-2 md:mb-4 leading-tight text-center md:text-left">Pelaporan Digital & Chatbot AI</h4>
+          <p className="hidden md:block text-[13px] leading-relaxed text-slate-600 dark:text-slate-400 font-medium">
             Memungkinkan akses laporan operasional kapan saja melalui chatbot mobile, meningkatkan kecepatan informasi dan efektivitas koordinasi tim lapangan.
           </p>
         </div>
 
         {/* GIS & Geospasial */}
-        <div className="bg-white dark:bg-slate-900 p-10 rounded-[44px] border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all duration-500 group">
-          <div className="w-14 h-14 bg-sky-500/10 text-sky-600 rounded-2xl flex items-center justify-center text-xl mb-8 group-hover:rotate-6 transition-transform">
+        <div className="min-w-[31%] md:min-w-0 bg-white dark:bg-slate-900 p-3 md:p-10 rounded-[18px] md:rounded-[44px] border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all duration-500 group shrink-0">
+          <div className="w-9 h-9 md:w-14 md:h-14 bg-sky-500/10 text-sky-600 rounded-xl md:rounded-2xl flex items-center justify-center text-sm md:text-xl mb-3 md:mb-8 group-hover:rotate-6 transition-transform mx-auto md:mx-0">
             <i className="fas fa-map-location-dot"></i>
           </div>
-          <h4 className="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight mb-4 leading-tight">Integrasi GIS & Data Cuaca</h4>
-          <p className="text-[13px] leading-relaxed text-slate-600 dark:text-slate-400 font-medium">
+          <h4 className="text-[10px] md:text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight mb-2 md:mb-4 leading-tight text-center md:text-left">Integrasi GIS & Data Cuaca</h4>
+          <p className="hidden md:block text-[13px] leading-relaxed text-slate-600 dark:text-slate-400 font-medium">
             Terhubung dengan Google Earth dan ArcGIS untuk pemantauan lokasi secara spasial, analisis lingkungan, serta perencanaan kegiatan tanam yang presisi.
           </p>
         </div>
 
         {/* Logbook Digital */}
-        <div className="bg-white dark:bg-slate-900 p-10 rounded-[44px] border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all duration-500 group">
-          <div className="w-14 h-14 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-2xl flex items-center justify-center text-xl mb-8 group-hover:rotate-6 transition-transform">
+        <div className="min-w-[31%] md:min-w-0 bg-white dark:bg-slate-900 p-3 md:p-10 rounded-[18px] md:rounded-[44px] border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-2xl transition-all duration-500 group shrink-0">
+          <div className="w-9 h-9 md:w-14 md:h-14 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-xl md:rounded-2xl flex items-center justify-center text-sm md:text-xl mb-3 md:mb-8 group-hover:rotate-6 transition-transform mx-auto md:mx-0">
             <i className="fas fa-book"></i>
           </div>
-          <h4 className="text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight mb-4 leading-tight">Logbook & Manajemen Dokumen</h4>
-          <p className="text-[13px] leading-relaxed text-slate-600 dark:text-slate-400 font-medium">
+          <h4 className="text-[10px] md:text-lg font-black text-slate-900 dark:text-white uppercase tracking-tight mb-2 md:mb-4 leading-tight text-center md:text-left">Logbook & Manajemen Dokumen</h4>
+          <p className="hidden md:block text-[13px] leading-relaxed text-slate-600 dark:text-slate-400 font-medium">
             Penyediaan logbook digital untuk pencatatan penggunaan bibit, pestisida, dan pupuk yang aman dan mudah diakses untuk keperluan audit berkelanjutan.
           </p>
         </div>
@@ -181,10 +181,10 @@ export const KnowledgeCenter: React.FC = () => {
             <div className="h-[1px] w-24 bg-slate-300 dark:bg-slate-700"></div>
          </div>
          <div className="space-y-1 opacity-50">
-           <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">
+           <p className="text-[10px] font-black text-slate-400 dark:text-slate-300 uppercase tracking-[0.2em]">
              DIKEMBANGKAN SECARA MANDIRI OLEH TIM ENGINEERING
            </p>
-           <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">
+           <p className="text-[10px] font-black text-slate-400 dark:text-slate-300 uppercase tracking-[0.2em]">
              PT MONTANA WANA TEKNOLOGI © 2026
            </p>
          </div>

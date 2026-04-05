@@ -25,13 +25,13 @@ export const WeatherOverlay: React.FC<WeatherOverlayProps> = React.memo(({ condi
   const getGradientClass = () => {
     switch (condition) {
       case 'clear':
-        return 'from-[#0ea5e9] via-[#38bdf8] to-[#f0fdfa]'; 
+        return 'from-[#075985] via-[#38bdf8] to-[#dbeafe]';
       case 'rain':
-        return 'from-[#1e293b] via-[#334155] to-[#475569]'; // Mendung Moody Pekat
+        return 'from-[#0f172a] via-[#334155] to-[#475569]';
       case 'storm':
-        return 'from-[#020617] via-[#0f172a] to-[#1e293b]'; // Gelap Badai
+        return 'from-[#020617] via-[#0f172a] to-[#334155]';
       case 'cloudy':
-        return 'from-[#0284c7] via-[#7dd3fc] to-[#fef3c7]'; // Biru semu-semu kuning (Request User)
+        return 'from-[#0369a1] via-[#7dd3fc] to-[#fde68a]';
       default:
         return 'from-slate-50 to-slate-100';
     }
@@ -39,12 +39,13 @@ export const WeatherOverlay: React.FC<WeatherOverlayProps> = React.memo(({ condi
 
   return (
     <div className={`fixed inset-0 pointer-events-none z-0 overflow-hidden transition-all duration-[2500ms] ease-in-out bg-gradient-to-br ${getGradientClass()}`}>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.14),_transparent_34%),linear-gradient(180deg,rgba(15,23,42,0.12),transparent_30%,rgba(15,23,42,0.08))]"></div>
       
       {/* 1. CERAH / CLEAR */}
       {condition === 'clear' && (
-        <div className="absolute inset-0 overflow-hidden opacity-40">
-          <div className="absolute top-[-10%] right-[-10%] w-[800px] h-[800px] bg-yellow-400/20 rounded-full blur-[160px] animate-pulse-gentle"></div>
-          <div className="absolute top-[30%] left-[-10%] w-full h-96 bg-white/10 rounded-full blur-[120px] animate-drift"></div>
+        <div className="absolute inset-0 overflow-hidden opacity-35">
+          <div className="absolute top-[-10%] right-[-10%] w-[800px] h-[800px] bg-yellow-300/18 rounded-full blur-[160px] animate-pulse-gentle"></div>
+          <div className="absolute top-[30%] left-[-10%] w-full h-96 bg-white/8 rounded-full blur-[120px] animate-drift"></div>
         </div>
       )}
 
@@ -80,9 +81,9 @@ export const WeatherOverlay: React.FC<WeatherOverlayProps> = React.memo(({ condi
       {condition === 'cloudy' && (
         <div className="absolute inset-0">
            {/* Sun glow effect for yellow vibe behind clouds */}
-           <div className="absolute top-[5%] right-[5%] w-[500px] h-[500px] bg-amber-200/40 rounded-full blur-[140px] animate-pulse-gentle"></div>
-           <div className="absolute top-[20%] left-[-10%] w-[120%] h-[400px] bg-white/20 rounded-full blur-[120px] animate-drift"></div>
-           <div className="absolute inset-0 bg-gradient-to-t from-amber-100/10 via-transparent to-transparent"></div>
+           <div className="absolute top-[5%] right-[5%] w-[500px] h-[500px] bg-amber-200/28 rounded-full blur-[140px] animate-pulse-gentle"></div>
+           <div className="absolute top-[20%] left-[-10%] w-[120%] h-[400px] bg-white/14 rounded-full blur-[120px] animate-drift"></div>
+           <div className="absolute inset-0 bg-gradient-to-t from-amber-100/8 via-transparent to-transparent"></div>
         </div>
       )}
 

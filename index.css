@@ -14,6 +14,64 @@ body {
     color: #f8fafc;
 }
 
+:root {
+    --montana-text-primary: #0f172a;
+    --montana-text-secondary: #334155;
+    --montana-text-muted: #475569;
+    --montana-text-subtle: #64748b;
+}
+
+.dark {
+    --montana-text-primary: #f8fafc;
+    --montana-text-secondary: #e2e8f0;
+    --montana-text-muted: #cbd5e1;
+    --montana-text-subtle: #94a3b8;
+}
+
+.montana-shell {
+    color: var(--montana-text-primary);
+}
+
+.montana-shell .text-slate-400,
+.montana-shell .text-slate-500,
+.montana-shell .text-slate-600,
+.montana-shell .text-slate-700 {
+    color: var(--montana-text-secondary);
+}
+
+.montana-shell .text-slate-300 {
+    color: var(--montana-text-muted);
+}
+
+.dark .montana-shell .dark\:text-slate-600,
+.dark .montana-shell .dark\:text-slate-500,
+.dark .montana-shell .dark\:text-slate-400,
+.dark .montana-shell .dark\:text-slate-300 {
+    color: var(--montana-text-muted);
+}
+
+.montana-shell .placeholder\:text-slate-400::placeholder,
+.montana-shell .placeholder\:text-slate-500::placeholder {
+    color: var(--montana-text-subtle);
+    opacity: 1;
+}
+
+.montana-shell [class*='bg-white/'],
+.montana-shell [class*='bg-slate-50/'],
+.montana-shell [class*='bg-slate-100/'],
+.montana-shell [class*='bg-slate-900/'],
+.montana-shell [class*='bg-slate-950/'] {
+    box-shadow: 0 10px 35px rgba(15, 23, 42, 0.08);
+}
+
+.dark .montana-shell [class*='bg-white/'],
+.dark .montana-shell [class*='bg-slate-50/'],
+.dark .montana-shell [class*='bg-slate-100/'],
+.dark .montana-shell [class*='bg-slate-900/'],
+.dark .montana-shell [class*='bg-slate-950/'] {
+    box-shadow: 0 16px 42px rgba(2, 6, 23, 0.24);
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 6px;

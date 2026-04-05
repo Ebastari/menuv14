@@ -49,28 +49,28 @@ const PARTNERS: Partner[] = [
 
 export const PartnerSection: React.FC = () => {
   return (
-    <section className="py-24 px-6 relative z-10 bg-transparent">
+    <section className="py-12 md:py-24 px-2 md:px-6 relative z-10 bg-transparent">
       <div className="max-w-[1440px] mx-auto">
-        <div className="flex flex-col items-center text-center mb-16">
-          <div className="inline-flex flex-col items-center gap-4 bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl px-10 py-6 rounded-[40px] shadow-2xl border border-white/20 dark:border-white/10 ring-1 ring-black/5">
-             <i className="fas fa-handshake-angle text-emerald-500 text-2xl mb-2"></i>
-             <h2 className="text-sm md:text-lg font-black text-slate-900 dark:text-white uppercase tracking-[0.3em] leading-tight">
+        <div className="flex flex-col items-center text-center mb-8 md:mb-16">
+          <div className="inline-flex flex-col items-center gap-2.5 md:gap-4 bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl px-5 md:px-10 py-4 md:py-6 rounded-[22px] md:rounded-[40px] shadow-xl md:shadow-2xl border border-white/20 dark:border-white/10 ring-1 ring-black/5">
+             <i className="fas fa-handshake-angle text-emerald-500 text-lg md:text-2xl mb-1 md:mb-2"></i>
+             <h2 className="text-[11px] md:text-lg font-black text-slate-900 dark:text-white uppercase tracking-[0.18em] md:tracking-[0.3em] leading-tight">
                My Montana AI bekerjasama dengan :
              </h2>
-             <p className="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest opacity-70">
+             <p className="text-[7px] md:text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.16em] md:tracking-widest opacity-70">
                Integrated Technology Partnership Ecosystem
              </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-10 gap-y-16">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-x-3 md:gap-x-10 gap-y-6 md:gap-y-16">
           {PARTNERS.map((partner) => (
             <div 
               key={partner.name} 
-              className="group flex flex-col items-center gap-5 transition-all"
+              className="group flex flex-col items-center gap-2.5 md:gap-5 transition-all"
               title={`${partner.name} - ${partner.category}`}
             >
-              <div className="w-14 h-14 flex items-center justify-center relative bg-white/10 dark:bg-black/10 rounded-2xl backdrop-blur-sm group-hover:bg-white/20 transition-all p-2">
+              <div className="w-11 h-11 md:w-14 md:h-14 flex items-center justify-center relative bg-white/10 dark:bg-black/10 rounded-xl md:rounded-2xl backdrop-blur-sm group-hover:bg-white/20 transition-all p-2">
                 <img 
                   src={partner.logo} 
                   alt={partner.name}
@@ -90,10 +90,10 @@ export const PartnerSection: React.FC = () => {
                 />
               </div>
               <div className="flex flex-col items-center text-center">
-                <span className="text-[10px] font-black text-slate-800 dark:text-slate-200 uppercase tracking-widest leading-none group-hover:text-emerald-500 transition-colors drop-shadow-sm">
+                <span className="text-[8px] md:text-[10px] font-black text-slate-800 dark:text-slate-200 uppercase tracking-[0.12em] md:tracking-widest leading-none group-hover:text-emerald-500 transition-colors drop-shadow-sm text-center">
                   {partner.name}
                 </span>
-                <span className="text-[7px] font-black text-emerald-500/60 uppercase tracking-tighter mt-2 opacity-0 group-hover:opacity-100 transition-all transform translate-y-1 group-hover:translate-y-0">
+                <span className="text-[6px] md:text-[7px] font-black text-emerald-500/60 uppercase tracking-tighter mt-1 md:mt-2 opacity-0 group-hover:opacity-100 transition-all transform translate-y-1 group-hover:translate-y-0">
                   {partner.category}
                 </span>
               </div>
@@ -101,19 +101,19 @@ export const PartnerSection: React.FC = () => {
           ))}
         </div>
 
-        <div className="mt-24 flex flex-wrap justify-center gap-12 opacity-40">
-           <div className="flex items-center gap-3">
-              <i className="fas fa-shield-check text-xs text-emerald-500"></i>
-              <span className="text-[8px] font-black uppercase tracking-widest text-slate-900 dark:text-white">Enterprise Security Grade</span>
-           </div>
-           <div className="flex items-center gap-3">
-              <i className="fas fa-bolt-lightning text-xs text-amber-500"></i>
-              <span className="text-[8px] font-black uppercase tracking-widest text-slate-900 dark:text-white">Real-time Data Sync</span>
-           </div>
-           <div className="flex items-center gap-3">
-              <i className="fas fa-earth-asia text-xs text-blue-500"></i>
-              <span className="text-[8px] font-black uppercase tracking-widest text-slate-900 dark:text-white">Global Geospatial Network</span>
-           </div>
+        <div className="mt-10 md:mt-24 flex flex-wrap justify-center gap-4 md:gap-12 opacity-40">
+          <div className="flex items-center gap-2 md:gap-3">
+            <i className="fas fa-shield-halved text-xs text-emerald-500"></i>
+                <span className="text-[7px] md:text-[8px] font-black uppercase tracking-[0.16em] md:tracking-widest text-slate-900 dark:text-white">Enterprise Security Grade</span>
+          </div>
+          <div className="flex items-center gap-2 md:gap-3">
+            <i className="fas fa-bolt-lightning text-xs text-amber-500"></i>
+                <span className="text-[7px] md:text-[8px] font-black uppercase tracking-[0.16em] md:tracking-widest text-slate-900 dark:text-white">Real-time Data Sync</span>
+          </div>
+          <div className="flex items-center gap-2 md:gap-3">
+            <i className="fas fa-earth-asia text-xs text-blue-500"></i>
+                <span className="text-[7px] md:text-[8px] font-black uppercase tracking-[0.16em] md:tracking-widest text-slate-900 dark:text-white">Global Geospatial Network</span>
+          </div>
         </div>
       </div>
     </section>

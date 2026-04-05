@@ -232,7 +232,7 @@ export const AdminActivityLogs: React.FC<AdminActivityLogsProps> = ({ onClose })
                       <td className="p-8">
                         <div className="flex items-center gap-3">
                           <div className={`w-2 h-2 rounded-full ${log.role === 'admin' ? 'bg-emerald-500' : 'bg-blue-500'} animate-pulse`}></div>
-                          <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+                          <span className="text-[10px] font-bold text-slate-400 dark:text-slate-300 uppercase tracking-widest">
                             {log.last_seen ? new Date(log.last_seen).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : '-'}
                           </span>
                         </div>
@@ -247,7 +247,7 @@ export const AdminActivityLogs: React.FC<AdminActivityLogsProps> = ({ onClose })
                   <i className="fas fa-database text-slate-200 dark:text-slate-800 text-4xl"></i>
                 </div>
                 <div className="space-y-2">
-                  <h4 className="text-lg font-black text-slate-400 dark:text-slate-600 uppercase tracking-[0.4em]">Vault Empty</h4>
+                  <h4 className="text-lg font-black text-slate-400 dark:text-slate-300 uppercase tracking-[0.4em]">Vault Empty</h4>
                   <p className="text-[11px] font-medium text-slate-300">No session activities detected on this cloud node.</p>
                 </div>
               </div>

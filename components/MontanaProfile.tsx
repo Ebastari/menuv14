@@ -163,7 +163,7 @@ export const MontanaProfile: React.FC<MontanaProfileProps> = ({ onClose }) => {
           </section>
 
           <section className="bg-slate-100 dark:bg-slate-800/40 p-8 rounded-[40px] border-2 border-dashed border-slate-200 dark:border-slate-700">
-             <h3 className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4">6. Pernyataan Tanggung Jawab</h3>
+             <h3 className="text-[10px] font-black text-slate-400 dark:text-slate-300 uppercase tracking-widest mb-4">6. Pernyataan Tanggung Jawab</h3>
              <p className="text-[11px] font-medium leading-relaxed text-slate-600 dark:text-slate-400">
               Pendiri menyatakan bahwa seluruh data Perseroan telah diisi dengan benar dan bersedia menaati seluruh ketentuan hukum yang berlaku terkait Perseroan Perorangan serta peraturan perundang-undangan lainnya. <br/>
               Pernyataan pendirian ini telah disetujui secara elektronik oleh Pemohon.

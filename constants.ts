@@ -19,6 +19,7 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 'download-1', title: 'Download Realisasi', titleEn: 'Download Realization', icon: 'fa-file-export', href: 'https://www.arcgis.com/sharing/rest/content/items/e422f795c4774c65af35b034f2255894/data' },
   { id: 'download-2', title: 'Download IPPKH', titleEn: 'Download IPPKH Data', icon: 'fa-file-pdf', href: 'https://www.arcgis.com/sharing/rest/content/items/5e253c50a5364155a37390eeac2cc819/data' },
   { id: 'report-seed', title: 'Laporan Bibit', titleEn: 'Seedling Reports', icon: 'fa-chart-line', href: 'https://lookerstudio.google.com/s/oDcbCRPbvm0' },
+  { id: 'looker-live', title: 'Live Looker Studio', titleEn: 'Live Looker Studio', icon: 'fa-chart-pie', href: 'https://lookerstudio.google.com/embed/reporting/0f17d71c-ef40-41de-8bb6-c07310037f83/page/p_edni3hcf2d', badge: 'Live' },
   { id: 'weather', title: 'Perkiraan Cuaca', titleEn: 'Weather Forecast', icon: 'fa-cloud-sun-rain', href: 'https://www.msn.com/id-id/cuaca' },
   { id: 'docs-rr', title: 'Dokumen RR', titleEn: 'RR Documents', icon: 'fa-folder-open', href: 'https://drive.google.com/file/d/177quXwlMkQusQRSbZboRrNnFSqwNaZhw/view' },
   { id: 'news-2025', title: 'Berita Acara 2025', titleEn: '2025 Reports', icon: 'fa-newspaper', href: 'https://ebastari.github.io/Realisasi-pekerjaan/Realisasi2025.html' },

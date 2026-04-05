@@ -191,7 +191,7 @@ export const UserProfileView: React.FC<UserProfileProps> = ({
                     <i className="fas fa-shield-keyhole text-emerald-500"></i>
                   </div>
                   <h4 className="text-[10px] font-black text-slate-900 dark:text-white uppercase tracking-widest">Verifikasi Google Diperlukan</h4>
-                  <p className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase leading-relaxed">
+                  <p className="text-[9px] font-bold text-slate-400 dark:text-slate-300 uppercase leading-relaxed">
                     Beberapa fitur profil terkunci. Hubungkan akun Google Anda untuk memverifikasi identitas digital dan membuka akses penuh.
                   </p>
                   <div className="flex justify-center" ref={googleBtnRef}></div>
@@ -256,7 +256,7 @@ export const UserProfileView: React.FC<UserProfileProps> = ({
               <i className="fas fa-envelope-open-text"></i>
             </div>
             <div>
-              <p className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Email Korespondensi</p>
+              <p className="text-[9px] font-black text-slate-400 dark:text-slate-300 uppercase tracking-widest mb-1">Email Korespondensi</p>
               <p className="text-sm font-bold text-slate-900 dark:text-white">{user.email || 'Belum ditautkan'}</p>
             </div>
           </div>
@@ -266,7 +266,7 @@ export const UserProfileView: React.FC<UserProfileProps> = ({
               <i className="fas fa-phone-volume"></i>
             </div>
             <div>
-              <p className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">WhatsApp Aktif</p>
+              <p className="text-[9px] font-black text-slate-400 dark:text-slate-300 uppercase tracking-widest mb-1">WhatsApp Aktif</p>
               <p className="text-sm font-bold text-slate-900 dark:text-white">{user.telepon || 'Belum terdaftar'}</p>
             </div>
           </div>
@@ -276,7 +276,7 @@ export const UserProfileView: React.FC<UserProfileProps> = ({
               <i className="fas fa-id-badge"></i>
             </div>
             <div>
-              <p className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Peran Struktural</p>
+              <p className="text-[9px] font-black text-slate-400 dark:text-slate-300 uppercase tracking-widest mb-1">Peran Struktural</p>
               <p className="text-sm font-bold text-slate-900 dark:text-white">{user.jabatan || 'Anggota Lapangan'}</p>
             </div>
           </div>

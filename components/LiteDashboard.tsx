@@ -3,11 +3,14 @@ import React, { useState } from 'react';
 import { MENU_ITEMS } from '../constants';
 import { MenuGrid } from './MenuGrid';
 import { SeedlingSummary } from './SeedlingSummary';
+import { MenuItem } from '../types';
 
 interface LiteDashboardProps {
   role: 'admin' | 'guest' | 'none';
   onOpenDashboardAI: () => void;
   onOpenActivityLogs: () => void;
+  onOpenLookerStudio: () => void;
+  onOpenExternalLink: (item: MenuItem) => void;
   onRequestLogin: () => void;
   language?: 'id' | 'en';
 }
@@ -16,6 +19,8 @@ export const LiteDashboard: React.FC<LiteDashboardProps> = ({
   role, 
   onOpenDashboardAI, 
   onOpenActivityLogs, 
+  onOpenLookerStudio,
+  onOpenExternalLink,
   onRequestLogin,
   language = 'id'
 }) => {
@@ -68,6 +73,8 @@ export const LiteDashboard: React.FC<LiteDashboardProps> = ({
             role={role} 
             onOpenDashboardAI={onOpenDashboardAI} 
             onOpenActivityLogs={onOpenActivityLogs} 
+            onOpenLookerStudio={onOpenLookerStudio}
+            onOpenExternalLink={onOpenExternalLink}
             onRequestLogin={onRequestLogin} 
             searchQuery={searchQuery}
             language={language}
@@ -76,7 +83,7 @@ export const LiteDashboard: React.FC<LiteDashboardProps> = ({
       </div>
 
       <div className="p-8 bg-slate-50 dark:bg-slate-900/50 rounded-[40px] border border-slate-100 dark:border-slate-800 text-center">
-        <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest leading-relaxed">
+        <p className="text-[10px] font-bold text-slate-400 dark:text-slate-300 uppercase tracking-widest leading-relaxed">
           {language === 'id' ? (
             <>{role === 'admin' ? 'Beberapa widget visual dinonaktifkan untuk kecepatan.' : 'Widget Dashboard Bibit hanya dapat diakses oleh Admin.'} <br/> Gunakan Pro Mode untuk fitur lengkap.</>
           ) : (

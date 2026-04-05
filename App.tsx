@@ -8,6 +8,8 @@ import { Login } from './components/Login';
 import { ProfileEdit } from './components/ProfileEdit';
 import { AboutSection } from './components/AboutSection';
 import { DashboardBibitAI } from './components/DashboardBibitAI';
+import { ExternalPortraitView } from './components/ExternalPortraitView';
+import { LookerStudioView } from './components/LookerStudioView';
 import { RosterWidget } from './components/RosterWidget';
 import { SeedlingSummary } from './components/SeedlingSummary';
 import { HelpCenter } from './components/HelpCenter';
@@ -27,9 +29,10 @@ import { Forecast7Days } from './components/Forecast7Days';
 import { SystemHistory } from './components/SystemHistory';
 import { WelcomeLoginPrompt } from './components/WelcomeLoginPrompt';
 import { CameraPreview } from './components/CameraPreview';
+import { ExternalFullscreenView } from './components/ExternalFullscreenView';
 import { AdminActivityLogs } from './components/AdminActivityLogs';
 import { LiteDashboard } from './components/LiteDashboard';
-import { UserProfile, WeatherCondition } from './types';
+import { MenuItem, UserProfile, WeatherCondition } from './types';
 
 const LOGO_URL = "https://i.ibb.co.com/pjNwjtj0/montana-AI-1-1.jpg";
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxljQVpyYZjBpRdZ0J_sgMXkTHX-v8i7_nBVYmnG25oLxZkpfuns_HwUyspxA66Vkvm/exec"; 
@@ -40,6 +43,25 @@ const SectionWrapper: React.FC<{ children: React.ReactNode; className?: string }
     {children}
   </section>
 );
+
+const getReadabilityOverlayClass = (condition: WeatherCondition, isLiteMode: boolean) => {
+  if (isLiteMode) {
+    return 'opacity-0';
+  }
+
+  switch (condition) {
+    case 'clear':
+      return 'bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.30),_transparent_34%),linear-gradient(180deg,rgba(248,250,252,0.34),rgba(248,250,252,0.52))] dark:bg-[radial-gradient(circle_at_top,_rgba(15,23,42,0.10),_transparent_32%),linear-gradient(180deg,rgba(2,6,23,0.36),rgba(2,6,23,0.56))]';
+    case 'cloudy':
+      return 'bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.22),_transparent_32%),linear-gradient(180deg,rgba(248,250,252,0.38),rgba(248,250,252,0.58))] dark:bg-[radial-gradient(circle_at_top,_rgba(30,41,59,0.14),_transparent_28%),linear-gradient(180deg,rgba(2,6,23,0.40),rgba(2,6,23,0.60))]';
+    case 'rain':
+      return 'bg-[linear-gradient(180deg,rgba(248,250,252,0.28),rgba(241,245,249,0.50))] dark:bg-[linear-gradient(180deg,rgba(2,6,23,0.40),rgba(2,6,23,0.62))]';
+    case 'storm':
+      return 'bg-[linear-gradient(180deg,rgba(226,232,240,0.26),rgba(226,232,240,0.42))] dark:bg-[linear-gradient(180deg,rgba(2,6,23,0.50),rgba(2,6,23,0.72))]';
+    default:
+      return 'bg-[linear-gradient(180deg,rgba(248,250,252,0.34),rgba(248,250,252,0.52))] dark:bg-[linear-gradient(180deg,rgba(2,6,23,0.36),rgba(2,6,23,0.56))]';
+  }
+};
 
 const AdminFeatureLock: React.FC<{ children: React.ReactNode; role: string; title?: string; language?: 'id' | 'en' }> = ({ children, role, title = "Akses Terbatas", language = 'id' }) => {
   if (role === 'admin') return <>{children}</>;
@@ -88,8 +110,20 @@ const App: React.FC = () => {
   const [showProfileEdit, setShowProfileEdit] = useState(false);
   const [showDashboardAI, setShowDashboardAI] = useState(false);
   const [showActivityLogs, setShowActivityLogs] = useState(false);
+  const [showLookerStudio, setShowLookerStudio] = useState(false);
+  const [externalView, setExternalView] = useState<{ title: string; url: string } | null>(null);
+  const [fullscreenView, setFullscreenView] = useState<{ title: string; subtitle: string; url: string; accent: 'emerald' | 'blue' } | null>(null);
   const [showDeveloperInfo, setShowDeveloperInfo] = useState(false);
   const [showMontanaProfile, setShowMontanaProfile] = useState(false);
+
+  const handleOpenExternalLink = (item: MenuItem | { title: string; url: string }) => {
+    const itemTitle = 'href' in item
+      ? (language === 'id' ? item.title : (item.titleEn || item.title))
+      : item.title;
+
+    const itemUrl = 'href' in item ? item.href : item.url;
+    setExternalView({ title: itemTitle, url: itemUrl });
+  };
 
   useEffect(() => {
     if (isAuthenticated && user.name !== 'Tamu Montana') {
@@ -196,6 +230,41 @@ const App: React.FC = () => {
     localStorage.setItem('montana_lang', language);
   }, [language]);
 
+  useEffect(() => {
+    const handleExternalAnchorClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      const anchor = target?.closest('a[href]') as HTMLAnchorElement | null;
+
+      if (!anchor || anchor.dataset.openRaw === 'true' || anchor.dataset.skipGlobalExternal === 'true') {
+        return;
+      }
+
+      const href = anchor.getAttribute('href');
+      if (!href || href.startsWith('#') || !/^https?:\/\//i.test(href)) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (href.includes('lookerstudio.google.com/embed/reporting/')) {
+        setShowLookerStudio(true);
+        return;
+      }
+
+      const title = anchor.dataset.viewerTitle
+        || anchor.getAttribute('aria-label')
+        || anchor.getAttribute('title')
+        || anchor.textContent?.trim()
+        || 'External Link';
+
+      setExternalView({ title, url: href });
+    };
+
+    document.addEventListener('click', handleExternalAnchorClick, true);
+    return () => document.removeEventListener('click', handleExternalAnchorClick, true);
+  }, []);
+
   const handleLoginSuccess = (userData: any, role: 'admin' | 'guest') => {
     setUser(userData); 
     setUserRole(role); 
@@ -237,9 +306,12 @@ const App: React.FC = () => {
 
   if (loading) return null;
 
+  const readabilityOverlayClass = getReadabilityOverlayClass(weatherCondition, isLiteMode);
+
   return (
-    <div className={`min-h-screen ${isLiteMode ? 'pb-24' : 'pb-48'} dark:bg-slate-950 text-slate-800 dark:text-slate-100 relative selection:bg-emerald-500/30 font-sans overflow-x-hidden`}>
+    <div className={`montana-shell min-h-screen ${isLiteMode ? 'pb-24' : 'pb-48'} dark:bg-slate-950 text-slate-900 dark:text-slate-50 relative selection:bg-emerald-500/30 font-sans overflow-x-hidden`} data-weather={weatherCondition}>
       <WeatherOverlay condition={isLiteMode ? 'unknown' : weatherCondition} />
+      <div className={`fixed inset-0 pointer-events-none z-[1] transition-all duration-700 backdrop-blur-[18px] ${readabilityOverlayClass}`}></div>
       
       <TopNavbar 
           user={user} isAuthenticated={isAuthenticated} currentTime={currentTime} weatherCondition={weatherCondition}
@@ -251,7 +323,7 @@ const App: React.FC = () => {
           onProfileClick={() => setActiveTab('profile')}
       />
 
-      <main className={`relative z-10 transition-all duration-500 ${isLiteMode ? 'pt-16 sm:pt-20 md:pt-32' : 'pt-20 sm:pt-28 md:pt-44'}`}>
+      <main className={`relative z-10 transition-all duration-500 ${isLiteMode ? 'pt-14 sm:pt-16 md:pt-24' : 'pt-16 sm:pt-20 md:pt-32'}`}>
           
           <div className={`${activeTab === 'home' ? 'block' : 'hidden'}`}>
               <SectionWrapper>
@@ -262,29 +334,31 @@ const App: React.FC = () => {
                       role={userRole} 
                       onOpenDashboardAI={() => setShowDashboardAI(true)} 
                       onOpenActivityLogs={() => setShowActivityLogs(true)} 
+                      onOpenLookerStudio={() => setShowLookerStudio(true)}
+                      onOpenExternalLink={handleOpenExternalLink}
                       onRequestLogin={() => setShowLoginModal(true)} 
                       language={language}
                     />
                   ) : (
-                    <div className="space-y-28">
+                    <div className="space-y-24">
                       {/* Weather/Forecast - Stays at Top */}
                       <Forecast7Days language={language} />
 
                       {/* MAIN MENU GRID - Prominent Feature Display */}
                       <div>
-                        <div className="mb-8 md:mb-10 lg:mb-12">
-                          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white uppercase tracking-tighter mb-2">Montana Features</h2>
-                          <p className="text-[12px] md:text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">{language === 'id' ? 'Sistem Cerdas Manajemen Lapangan' : 'Intelligent Field Management System'}</p>
+                        <div className="mb-6 md:mb-8 lg:mb-10">
+                          <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 dark:text-white uppercase tracking-tighter mb-2">Montana Menu </h2>
+                          <p className="text-[11px] md:text-[13px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.22em]">{language === 'id' ? 'Sistem Cerdas Manajemen Lapangan' : 'Intelligent Field Management System'}</p>
                         </div>
                         
-                        <div className="relative group mb-6">
-                          <i className="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-emerald-500 transition-colors z-10"></i>
+                        <div className="relative group mb-5 md:mb-6">
+                          <i className="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-sm text-slate-400 group-focus-within:text-emerald-500 transition-colors z-10"></i>
                           <input 
                             type="text" 
-                            placeholder={language === 'id' ? "Cari Fitur Montana..." : "Search Montana Features..."}
+                            placeholder={language === 'id' ? "Cari Fitur Montana..." : "Search Montana Menu..."}
                             value={proMenuSearch}
                             onChange={(e) => setProMenuSearch(e.target.value)}
-                            className="w-full pl-14 pr-6 py-5 md:py-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-[32px] md:rounded-[40px] font-bold text-[12px] md:text-[13px] outline-none focus:ring-2 focus:ring-emerald-500/50 shadow-xl transition-all placeholder:text-slate-400"
+                            className="w-full pl-12 pr-5 py-3.5 md:py-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-[24px] md:rounded-[28px] font-bold text-[12px] md:text-[13px] outline-none focus:ring-2 focus:ring-emerald-500/50 shadow-lg transition-all placeholder:text-slate-400"
                           />
                         </div>
 
@@ -292,6 +366,8 @@ const App: React.FC = () => {
                           role={userRole} 
                           onOpenDashboardAI={() => setShowDashboardAI(true)} 
                           onOpenActivityLogs={() => setShowActivityLogs(true)} 
+                          onOpenLookerStudio={() => setShowLookerStudio(true)}
+                          onOpenExternalLink={handleOpenExternalLink}
                           onRequestLogin={() => setShowLoginModal(true)} 
                           searchQuery={proMenuSearch}
                           language={language}
@@ -303,12 +379,12 @@ const App: React.FC = () => {
                       <div className="flex flex-col gap-10">
                          {/* Expanded Peta Lapangan */}
                          <AdminFeatureLock role={userRole} title={language === 'id' ? "Visualisasi Peta Lapangan" : "Field Map Visualization"} language={language}>
-                            <CameraPreview type="map" />
+                           <CameraPreview type="map" onOpenFullscreen={setFullscreenView} />
                          </AdminFeatureLock>
                          
                          {/* Smart Camera Visualization */}
                          <AdminFeatureLock role={userRole} title={language === 'id' ? "Visualisasi Kamera Pintar" : "Smart Camera Visualization"} language={language}>
-                            <CameraPreview type="camera" />
+                           <CameraPreview type="camera" onOpenFullscreen={setFullscreenView} />
                          </AdminFeatureLock>
                       </div>
 
@@ -321,7 +397,7 @@ const App: React.FC = () => {
                       </AdminFeatureLock>
 
                       <GrowthCard currentSeconds={activeSeconds} user={user} isVerified={isOAuthAuthenticated} language={language} />
-                      <SubscribeWidget language={language} />
+                      <SubscribeWidget language={language} onOpenExternalLink={handleOpenExternalLink} />
                       <SystemHistory language={language} />
                       
                       {/* System Intelligence & Montana Assistant - Full Width */}
@@ -345,7 +421,7 @@ const App: React.FC = () => {
       {!isLiteMode && (
         <div className="mt-24 space-y-24 relative z-10 transition-all duration-700">
             <GamePromotionSection />
-            <PlayStoreSection />
+            <PlayStoreSection isAuthenticated={isAuthenticated} onRequestLogin={() => setShowLoginModal(true)} />
             <PartnerSection />
             <GlobalFooter onOpenMontanaProfile={() => setShowMontanaProfile(true)} />
         </div>
@@ -358,9 +434,9 @@ const App: React.FC = () => {
       )}
 
       {userRole === 'admin' && <FloatingStockBubble data={todaySummary} />}
-      {userRole === 'admin' && <BibitNotificationToast data={showDailyToast ? latestUpdate : null} onClose={() => setShowDailyToast(false)} />}
+      {userRole === 'admin' && <BibitNotificationToast data={showDailyToast ? latestUpdate : null} onClose={() => setShowDailyToast(false)} onOpenForm={handleOpenExternalLink} />}
       
-      <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} isAuthenticated={isAuthenticated} userRole={userRole} onRequestLogin={() => setShowLoginModal(true)} language={language} />
+      <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} isAuthenticated={isAuthenticated} userRole={userRole} onRequestLogin={() => setShowLoginModal(true)} onOpenExternalLink={handleOpenExternalLink} language={language} />
 
       {showLoginModal && <Login onVerified={handleLoginSuccess} onClose={() => setShowLoginModal(false)} />}
       {showProfileEdit && <ProfileEdit user={user} onSave={(updated) => { 
@@ -374,6 +450,9 @@ const App: React.FC = () => {
       }} onClose={() => setShowProfileEdit(false)} />}
       {showDashboardAI && <DashboardBibitAI onClose={() => setShowDashboardAI(false)} />}
       {showActivityLogs && <AdminActivityLogs onClose={() => setShowActivityLogs(false)} />}
+      {showLookerStudio && <LookerStudioView onClose={() => setShowLookerStudio(false)} />}
+      {externalView && <ExternalPortraitView title={externalView.title} url={externalView.url} onClose={() => setExternalView(null)} />}
+      {fullscreenView && <ExternalFullscreenView title={fullscreenView.title} subtitle={fullscreenView.subtitle} url={fullscreenView.url} accent={fullscreenView.accent} onClose={() => setFullscreenView(null)} />}
       {showDeveloperInfo && <DeveloperInfo onClose={() => setShowDeveloperInfo(false)} />}
       {showMontanaProfile && <MontanaProfile onClose={() => setShowMontanaProfile(false)} />}
     </div>

@@ -96,34 +96,34 @@ export const Forecast7Days: React.FC<Forecast7DaysProps> = ({ language = 'id' })
   const selectedDay = selectedDayIndex !== null ? forecast[selectedDayIndex] : null;
 
   if (loading) return (
-    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 w-full h-48 animate-pulse">
+    <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 md:gap-4 w-full animate-pulse">
       {[...Array(7)].map((_, i) => (
-        <div key={i} className="bg-white/50 dark:bg-slate-900/50 rounded-[40px] border border-slate-100 dark:border-slate-800"></div>
+        <div key={i} className="h-[126px] md:h-48 bg-white/50 dark:bg-slate-900/50 rounded-[22px] md:rounded-[40px] border border-slate-100 dark:border-slate-800"></div>
       ))}
     </div>
   );
 
   if (forecast.length === 0) return (
-    <div className="bg-white/50 dark:bg-slate-900/50 rounded-[44px] p-8 border border-dashed border-slate-200 dark:border-slate-800 text-center">
+    <div className="bg-white/50 dark:bg-slate-900/50 rounded-[24px] md:rounded-[44px] p-4 md:p-8 border border-dashed border-slate-200 dark:border-slate-800 text-center">
       <i className="fas fa-cloud-slash text-slate-300 text-3xl mb-4"></i>
       <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{language === 'id' ? 'Data prakiraan cuaca tidak tersedia sementara waktu.' : 'Weather forecast data is currently unavailable.'}</p>
     </div>
   );
 
   return (
-    <div className="space-y-8 animate-fadeIn w-full">
-      <div className="flex items-center justify-between px-2">
+    <div className="space-y-5 md:space-y-8 animate-fadeIn w-full">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 px-1 md:px-2">
         <div className="flex flex-col">
-          <h3 className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-[0.4em] mb-1">Advanced Forecast</h3>
-          <p className="text-2xl font-black text-slate-900 dark:text-white tracking-tight uppercase">{language === 'id' ? 'Meteo Analytics 7 Hari' : '7-Day Meteo Analytics'}</p>
+          <h3 className="text-[8px] md:text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-[0.24em] md:tracking-[0.4em] mb-1">Advanced Forecast</h3>
+          <p className="text-xl md:text-2xl font-black text-slate-900 dark:text-white tracking-tight uppercase">{language === 'id' ? 'Meteo Analytics 7 Hari' : '7-Day Meteo Analytics'}</p>
         </div>
-        <div className="flex flex-col items-end">
-            <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest bg-blue-500/10 px-4 py-1.5 rounded-full border border-blue-500/20">Rantau, Tapin</span>
-            <p className="text-[8px] font-bold text-slate-400 uppercase mt-2">{language === 'id' ? 'Klik kartu untuk detail jam' : 'Click card for hourly details'}</p>
+        <div className="flex flex-col md:items-end">
+            <span className="text-[8px] md:text-[10px] font-black text-blue-600 uppercase tracking-[0.16em] md:tracking-widest bg-blue-500/10 px-3 md:px-4 py-1 md:py-1.5 rounded-full border border-blue-500/20 w-fit">Rantau, Tapin</span>
+            <p className="text-[7px] md:text-[8px] font-bold text-slate-400 uppercase mt-1.5 md:mt-2">{language === 'id' ? 'Geser atau klik untuk detail jam' : 'Swipe or click for hourly detail'}</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 w-full">
+      <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 md:gap-4 w-full">
         {forecast.map((day, idx) => {
           const style = getWeatherStyle(day.weatherCode, day.rainProb);
           const isSelected = selectedDayIndex === idx;
@@ -133,36 +133,36 @@ export const Forecast7Days: React.FC<Forecast7DaysProps> = ({ language = 'id' })
             <button 
               key={day.date}
               onClick={() => setSelectedDayIndex(isSelected ? null : idx)}
-              className={`p-6 rounded-[44px] border transition-all duration-500 group relative overflow-hidden flex flex-col items-center gap-4 text-center ${
+              className={`p-3 md:p-6 rounded-[22px] md:rounded-[44px] border transition-all duration-500 group relative overflow-hidden flex flex-col items-center gap-2.5 md:gap-4 text-center ${
                 isSelected 
                 ? 'bg-slate-900 dark:bg-emerald-600 border-emerald-500/50 shadow-2xl scale-[1.02] z-10' 
                 : 'bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 hover:border-blue-500/30 hover:-translate-y-1 shadow-sm'
               }`}
             >
               <div className="relative z-10 w-full">
-                <p className={`text-[11px] font-black uppercase tracking-widest mb-1 ${isSelected ? 'text-emerald-400' : 'text-blue-600'}`}>
+                <p className={`text-[8px] md:text-[11px] font-black uppercase tracking-[0.16em] md:tracking-widest mb-0.5 md:mb-1 ${isSelected ? 'text-emerald-400' : 'text-blue-600'}`}>
                   {displayLabel}
                 </p>
-                <p className={`text-[9px] font-bold uppercase tracking-tighter mb-4 opacity-60 ${isSelected ? 'text-white' : 'text-slate-400'}`}>
+                <p className={`text-[7px] md:text-[9px] font-bold uppercase tracking-tighter mb-2.5 md:mb-4 opacity-60 ${isSelected ? 'text-white' : 'text-slate-400'}`}>
                   {language === 'id' ? day.fullDate : day.fullDateEn}
                 </p>
                 
-                <div className={`w-16 h-16 mx-auto rounded-[24px] ${style.bg} flex items-center justify-center text-3xl ${isSelected ? 'text-white bg-white/10' : style.color} group-hover:scale-110 transition-transform duration-500 mb-4 shadow-inner`}>
+                <div className={`w-11 h-11 md:w-16 md:h-16 mx-auto rounded-[14px] md:rounded-[24px] ${style.bg} flex items-center justify-center text-[18px] md:text-3xl ${isSelected ? 'text-white bg-white/10' : style.color} group-hover:scale-110 transition-transform duration-500 mb-2.5 md:mb-4 shadow-inner`}>
                   <i className={`fas ${style.icon}`}></i>
                 </div>
 
                 <div className="space-y-1">
-                  <div className="flex items-center justify-center gap-2">
-                    <span className={`text-2xl font-black tracking-tighter ${isSelected ? 'text-white' : 'text-slate-900 dark:text-white'}`}>{day.maxTemp}°</span>
-                    <span className={`text-sm font-bold tracking-tighter ${isSelected ? 'text-white/60' : 'text-slate-400'}`}>{day.minTemp}°</span>
+                  <div className="flex items-center justify-center gap-1.5 md:gap-2">
+                    <span className={`text-lg md:text-2xl font-black tracking-tighter ${isSelected ? 'text-white' : 'text-slate-900 dark:text-white'}`}>{day.maxTemp}°</span>
+                    <span className={`text-[10px] md:text-sm font-bold tracking-tighter ${isSelected ? 'text-white/60' : 'text-slate-400'}`}>{day.minTemp}°</span>
                   </div>
-                  <div className={`flex items-center justify-center gap-1.5 text-[10px] font-black uppercase tracking-tighter ${isSelected ? 'text-emerald-400' : 'text-blue-500'}`}>
-                    <i className="fas fa-droplet text-[9px]"></i>
+                  <div className={`flex items-center justify-center gap-1 text-[8px] md:text-[10px] font-black uppercase tracking-tighter ${isSelected ? 'text-emerald-400' : 'text-blue-500'}`}>
+                    <i className="fas fa-droplet text-[8px] md:text-[9px]"></i>
                     {day.rainProb}%
                   </div>
                 </div>
 
-                <p className={`text-[8px] font-black uppercase tracking-widest mt-4 opacity-50 ${isSelected ? 'text-white' : 'text-slate-500'}`}>
+                <p className={`text-[6px] md:text-[8px] font-black uppercase tracking-[0.14em] md:tracking-widest mt-2.5 md:mt-4 opacity-50 ${isSelected ? 'text-white' : 'text-slate-500'}`}>
                   {style.label}
                 </p>
               </div>

@@ -292,33 +292,33 @@ export const HelpCenter: React.FC<HelpCenterProps> = ({ language = 'id' }) => {
   , [activeCategoryId, currentFAQ]);
 
   return (
-    <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-3xl rounded-[48px] border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col h-[600px] md:h-[800px] lg:h-[900px] transition-all duration-700">
+    <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-3xl rounded-[24px] md:rounded-[48px] border border-slate-200 dark:border-slate-800 shadow-xl md:shadow-2xl overflow-hidden flex flex-col h-[520px] md:h-[800px] lg:h-[900px] transition-all duration-700">
       
-      <div className="p-7 md:p-8 lg:p-10 border-b border-slate-100 dark:border-slate-800/50 bg-white/40 dark:bg-slate-900/40 shrink-0">
+      <div className="p-4 md:p-8 lg:p-10 border-b border-slate-100 dark:border-slate-800/50 bg-white/40 dark:bg-slate-900/40 shrink-0">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 md:w-14 md:h-14 bg-emerald-600 rounded-2xl flex items-center justify-center text-white text-lg md:text-xl shadow-xl relative">
+          <div className="flex items-center gap-3 md:gap-4">
+            <div className="w-10 h-10 md:w-14 md:h-14 bg-emerald-600 rounded-xl md:rounded-2xl flex items-center justify-center text-white text-base md:text-xl shadow-xl relative">
               <i className="fas fa-robot animate-pulse"></i>
               <div className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 rounded-full border-2 border-white dark:border-slate-900"></div>
             </div>
             <div>
-              <h4 className="text-sm md:text-base font-black text-slate-900 dark:text-white uppercase tracking-tight leading-none">Montana Assistant</h4>
-              <p className="text-[8px] md:text-[9px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest mt-1.5 opacity-70">Bilingual Engine v4.5</p>
+              <h4 className="text-[13px] md:text-base font-black text-slate-900 dark:text-white uppercase tracking-tight leading-none">Montana Assistant</h4>
+              <p className="text-[7px] md:text-[9px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.16em] md:tracking-widest mt-1 opacity-70">Bilingual Engine v4.5</p>
             </div>
           </div>
           <button 
             onClick={() => setMessages([{ role: 'model', text: initialMsg }])}
-            className="w-10 h-10 md:w-11 md:h-11 rounded-xl md:rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all active:scale-90 text-xs md:text-sm"
+            className="w-9 h-9 md:w-11 md:h-11 rounded-xl md:rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all active:scale-90 text-[11px] md:text-sm"
           >
             <i className="fas fa-rotate"></i>
           </button>
         </div>
       </div>
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 space-y-6 no-scrollbar bg-slate-50/30 dark:bg-slate-950/20">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-10 space-y-4 md:space-y-6 no-scrollbar bg-slate-50/30 dark:bg-slate-950/20">
         {messages.map((msg, i) => (
           <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fadeIn`}>
-            <div className={`max-w-[85%] px-5 md:px-6 py-3 md:py-4 rounded-[24px] text-[11px] md:text-[12px] font-medium leading-relaxed shadow-sm transition-all ${
+            <div className={`max-w-[88%] px-4 md:px-6 py-2.5 md:py-4 rounded-[18px] md:rounded-[24px] text-[10px] md:text-[12px] font-medium leading-relaxed shadow-sm transition-all ${
               msg.role === 'user' 
                 ? 'bg-slate-900 dark:bg-emerald-600 text-white rounded-tr-none' 
                 : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-100 dark:border-slate-700 rounded-tl-none'
@@ -330,13 +330,13 @@ export const HelpCenter: React.FC<HelpCenterProps> = ({ language = 'id' }) => {
         ))}
       </div>
 
-      <div className="p-6 md:p-8 lg:p-10 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border-t border-slate-100 dark:border-slate-800/50 shrink-0 max-h-[40%] overflow-y-auto">
-        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-4 mb-4 md:mb-5 border-b border-black/5 dark:border-white/5">
+      <div className="p-4 md:p-8 lg:p-10 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border-t border-slate-100 dark:border-slate-800/50 shrink-0 max-h-[42%] overflow-y-auto">
+        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-3 md:pb-4 mb-3 md:mb-5 border-b border-black/5 dark:border-white/5">
           {currentFAQ.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveCategoryId(cat.id)}
-              className={`whitespace-nowrap px-4 md:px-5 py-2 md:py-2.5 rounded-xl md:rounded-2xl text-[8px] md:text-[9px] font-black uppercase tracking-widest flex items-center gap-2 transition-all flex-shrink-0 ${
+              className={`whitespace-nowrap px-3 md:px-5 py-1.5 md:py-2.5 rounded-lg md:rounded-2xl text-[7px] md:text-[9px] font-black uppercase tracking-[0.16em] md:tracking-widest flex items-center gap-1.5 md:gap-2 transition-all flex-shrink-0 ${
                 activeCategoryId === cat.id 
                   ? 'bg-emerald-600 text-white shadow-lg' 
                   : 'bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -348,28 +348,28 @@ export const HelpCenter: React.FC<HelpCenterProps> = ({ language = 'id' }) => {
           ))}
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-5">
+        <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4 md:mb-5">
           {activeCategory.questions.map((faq, idx) => (
             <button
               key={idx}
               onClick={() => handleSendMessage(faq.query)}
               disabled={isProcessing}
-              className="px-3 md:px-4 lg:px-5 py-2 md:py-2.5 bg-slate-50 dark:bg-slate-950/50 text-slate-500 dark:text-slate-500 rounded-lg md:rounded-xl text-[8px] md:text-[9px] lg:text-xs font-black uppercase tracking-widest border border-black/5 dark:border-white/5 hover:bg-emerald-600 hover:text-white transition-all active:scale-95 flex-shrink-0"
+              className="px-2.5 md:px-4 lg:px-5 py-1.5 md:py-2.5 bg-slate-50 dark:bg-slate-950/50 text-slate-500 dark:text-slate-300 rounded-lg md:rounded-xl text-[7px] md:text-[9px] lg:text-xs font-black uppercase tracking-[0.14em] md:tracking-widest border border-black/5 dark:border-white/5 hover:bg-emerald-600 hover:text-white transition-all active:scale-95 flex-shrink-0"
             >
               {faq.label}
             </button>
           ))}
         </div>
 
-        <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(input); }} className="flex gap-3 md:gap-4">
+        <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(input); }} className="flex gap-2.5 md:gap-4">
           <input 
             type="text" 
             value={input} 
             onChange={(e) => setInput(e.target.value)} 
             placeholder={language === 'id' ? "Tanyakan sesuatu..." : "Ask me anything..."}
-            className="flex-1 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl md:rounded-3xl px-5 md:px-6 py-3 md:py-4 text-[11px] md:text-[12px] font-bold focus:ring-2 focus:ring-emerald-500 outline-none transition-all dark:text-white" 
+            className="flex-1 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl md:rounded-3xl px-4 md:px-6 py-2.5 md:py-4 text-[10px] md:text-[12px] font-bold focus:ring-2 focus:ring-emerald-500 outline-none transition-all dark:text-white" 
           />
-          <button type="submit" disabled={!input.trim() || isProcessing} className="w-12 h-12 md:w-14 md:h-14 bg-slate-900 dark:bg-emerald-600 text-white rounded-2xl md:rounded-3xl flex items-center justify-center shadow-lg active:scale-90 transition-all">
+          <button type="submit" disabled={!input.trim() || isProcessing} className="w-10 h-10 md:w-14 md:h-14 bg-slate-900 dark:bg-emerald-600 text-white rounded-xl md:rounded-3xl flex items-center justify-center shadow-lg active:scale-90 transition-all">
             <i className={`fas ${isProcessing ? 'fa-circle-notch fa-spin' : 'fa-paper-plane'} text-xs md:text-sm`}></i>
           </button>
         </form>

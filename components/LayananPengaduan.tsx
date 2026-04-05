@@ -208,43 +208,43 @@ export const LayananPengaduan: React.FC<LayananPengaduanProps> = ({ language = '
   };
 
   return (
-    <div id="narasi-section" className="space-y-16 animate-fadeIn min-h-[400px] relative">
+    <div id="narasi-section" className="space-y-10 md:space-y-16 animate-fadeIn min-h-[400px] relative">
       
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 px-4">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 md:gap-6 px-3 md:px-4 py-3 md:py-4 rounded-[20px] md:rounded-[28px] bg-white/65 dark:bg-slate-950/55 border border-slate-200/70 dark:border-white/10 backdrop-blur-xl">
         <div className="flex flex-col">
-          <h3 className="text-[11px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.4em] mb-4 leading-none">{t.headerSub}</h3>
-          <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter leading-none uppercase">
-            {language === 'id' ? 'Narasi Sistem' : 'System Narrative'} <span className="text-emerald-600">Montana AI</span>
+          <h3 className="text-[8px] md:text-[11px] font-black text-emerald-700 dark:text-emerald-400 uppercase tracking-[0.2em] md:tracking-[0.4em] mb-2 md:mb-4 leading-none">{t.headerSub}</h3>
+          <h1 className="text-2xl md:text-4xl font-black text-slate-950 dark:text-white tracking-tighter leading-none uppercase drop-shadow-sm">
+            {language === 'id' ? 'Narasi Sistem' : 'System Narrative'} <span className="text-emerald-600 dark:text-emerald-400">Montana AI</span>
           </h1>
         </div>
-        <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest max-w-sm text-right">
+        <p className="text-[8px] md:text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-[0.14em] md:tracking-widest max-w-sm text-left md:text-right leading-relaxed">
           {t.headerDesc}
         </p>
       </div>
 
       {!selectedFeature ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 px-2">
+        <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-2 gap-2.5 md:gap-6 px-0 md:px-2">
           {features.map((f) => (
             <button 
               key={f.id} 
               onClick={() => setSelectedFeature(f)}
-              className="bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl p-8 rounded-[40px] border border-white/50 dark:border-slate-800 hover:border-emerald-500/40 transition-all duration-500 group relative overflow-hidden shadow-sm hover:shadow-2xl flex flex-col items-center text-center"
+              className="min-h-[112px] md:min-h-[240px] bg-white dark:bg-slate-900 backdrop-blur-xl px-2.5 py-3 md:p-8 rounded-[20px] sm:rounded-[24px] md:rounded-[34px] border border-slate-200 dark:border-white/10 hover:border-emerald-500/40 transition-all duration-300 group relative overflow-hidden shadow-sm md:shadow-md hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1 active:scale-95 flex flex-col items-center justify-center text-center"
             >
-              <div className="absolute top-6 right-6 px-3 py-1 bg-slate-100 dark:bg-slate-800 text-[8px] font-black text-slate-400 uppercase tracking-widest rounded-full group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+              <div className="absolute top-2 right-2 md:top-4 md:right-4 px-1.5 sm:px-2 md:px-3 py-0.5 md:py-1 bg-emerald-600 text-white text-[6px] md:text-[7px] font-black uppercase tracking-[0.12em] md:tracking-widest rounded-full shadow-md z-10 ring-1 md:ring-2 ring-white dark:ring-slate-900 group-hover:scale-110 transition-all duration-300 max-w-[58px] md:max-w-none truncate">
                 {f.category}
               </div>
-              <div className="w-20 h-20 shrink-0 rounded-[28px] bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-3xl text-slate-400 group-hover:text-emerald-500 transition-all duration-500 mb-6">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-16 md:h-16 shrink-0 rounded-[14px] sm:rounded-[16px] md:rounded-[26px] bg-slate-50 dark:bg-slate-800/60 flex items-center justify-center text-[18px] sm:text-[20px] md:text-[30px] text-slate-500 dark:text-slate-300 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 group-hover:bg-emerald-500/10 shadow-inner transition-all duration-300 mb-2.5 sm:mb-3 md:mb-5 mt-1 md:mt-0">
                 <i className={`fas ${f.icon}`}></i>
               </div>
-              <div className="space-y-3">
-                <h2 className="text-[14px] font-black text-slate-900 dark:text-white uppercase tracking-tight leading-tight group-hover:text-emerald-600">
+              <div className="space-y-1 md:space-y-2 w-full">
+                <h2 className="text-[9px] sm:text-[10px] md:text-[14px] font-black text-slate-900 dark:text-slate-100 uppercase tracking-tight leading-tight md:leading-snug group-hover:text-emerald-600 dark:group-hover:text-emerald-400 min-h-[2.4rem] sm:min-h-[2.8rem] md:min-h-0 flex items-center justify-center px-0.5 md:px-1 break-words">
                   {f.title}
                 </h2>
-                <p className="text-[10px] leading-relaxed font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest line-clamp-2">
+                <p className="hidden md:block text-[10px] leading-relaxed font-bold text-slate-500 dark:text-slate-300 uppercase tracking-widest line-clamp-2">
                   {f.highlight}
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-slate-50 dark:border-slate-800 w-full flex items-center justify-center gap-2 text-emerald-500 text-[8px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">
+              <div className="mt-2.5 md:mt-6 pt-2 md:pt-4 border-t border-slate-100 dark:border-slate-800 w-full flex items-center justify-center gap-1.5 md:gap-2 text-emerald-500 text-[6px] md:text-[8px] font-black uppercase tracking-[0.14em] md:tracking-widest opacity-75 md:opacity-0 group-hover:opacity-100 transition-all">
                 {t.learnMore} <i className="fas fa-arrow-right"></i>
               </div>
             </button>
@@ -303,7 +303,7 @@ export const LayananPengaduan: React.FC<LayananPengaduanProps> = ({ language = '
             </div>
             <div>
               <p className="text-[12px] font-black text-white uppercase tracking-widest">{t.supportTitle}</p>
-              <p className="text-[10px] font-bold text-slate-400 dark:text-emerald-400/60 uppercase tracking-widest mt-1">{t.supportDesc}</p>
+              <p className="text-[10px] font-bold text-slate-300 dark:text-emerald-200/80 uppercase tracking-widest mt-1">{t.supportDesc}</p>
             </div>
           </div>
           <i className="fas fa-arrow-right text-emerald-500 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-2 mr-4"></i>
@@ -318,7 +318,7 @@ export const LayananPengaduan: React.FC<LayananPengaduanProps> = ({ language = '
               <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white uppercase tracking-tight mb-4">
                 {t.faqTitle}
               </h2>
-              <p className="text-sm md:text-base font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+              <p className="text-sm md:text-base font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
                 {t.faqDesc}
               </p>
             </div>

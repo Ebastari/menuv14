@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 
 interface SubscribeWidgetProps {
   language?: 'id' | 'en';
+  onOpenExternalLink: (payload: { title: string; url: string }) => void;
 }
 
-export const SubscribeWidget: React.FC<SubscribeWidgetProps> = ({ language = 'id' }) => {
+export const SubscribeWidget: React.FC<SubscribeWidgetProps> = ({ language = 'id', onOpenExternalLink }) => {
   const [formData, setFormData] = useState({
     nama: '',
     jabatan: '',
@@ -32,7 +33,10 @@ export const SubscribeWidget: React.FC<SubscribeWidgetProps> = ({ language = 'id
     const waUrl = `https://wa.me/6281122220044?text=${message}`;
     
     setTimeout(() => {
-      window.open(waUrl, '_blank');
+      onOpenExternalLink({
+        title: language === 'id' ? 'Pendaftaran WhatsApp' : 'WhatsApp Registration',
+        url: waUrl,
+      });
       setIsSending(false);
       setFormData({ nama: '', jabatan: '', hp: '' });
     }, 800);
@@ -70,7 +74,7 @@ export const SubscribeWidget: React.FC<SubscribeWidgetProps> = ({ language = 'id
                     <i className="fas fa-check-circle text-emerald-500 mr-2"></i> {language === 'id' ? 'Gratis' : 'Free'}
                   </span>
                   <span className="px-4 py-2 bg-slate-50 dark:bg-slate-800 rounded-full text-[9px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest border border-slate-100 dark:border-slate-700">
-                    <i className="fas fa-shield-check text-emerald-500 mr-2"></i> {language === 'id' ? 'Terenkripsi' : 'Encrypted'}
+                    <i className="fas fa-shield-halved text-emerald-500 mr-2"></i> {language === 'id' ? 'Terenkripsi' : 'Encrypted'}
                   </span>
                 </div>
               </div>
@@ -90,7 +94,7 @@ export const SubscribeWidget: React.FC<SubscribeWidgetProps> = ({ language = 'id
             <div className="flex-1 bg-slate-50/50 dark:bg-slate-800/40 rounded-[40px] p-8 border border-slate-100 dark:border-white/5 backdrop-blur-sm">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">{language === 'id' ? 'Nama Lengkap' : 'Full Name'}</label>
+                  <label className="text-[9px] font-black text-slate-400 dark:text-slate-300 uppercase tracking-widest ml-1">{language === 'id' ? 'Nama Lengkap' : 'Full Name'}</label>
                   <input 
                     type="text" 
                     name="nama"
@@ -103,7 +107,7 @@ export const SubscribeWidget: React.FC<SubscribeWidgetProps> = ({ language = 'id
                 </div>
                 
                 <div className="space-y-1">
-                  <label className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">{language === 'id' ? 'Jabatan / Peran' : 'Job Title / Role'}</label>
+                  <label className="text-[9px] font-black text-slate-400 dark:text-slate-300 uppercase tracking-widest ml-1">{language === 'id' ? 'Jabatan / Peran' : 'Job Title / Role'}</label>
                   <input 
                     type="text" 
                     name="jabatan"
@@ -116,7 +120,7 @@ export const SubscribeWidget: React.FC<SubscribeWidgetProps> = ({ language = 'id
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">WhatsApp</label>
+                  <label className="text-[9px] font-black text-slate-400 dark:text-slate-300 uppercase tracking-widest ml-1">WhatsApp</label>
                   <input 
                     type="tel" 
                     name="hp"
@@ -158,10 +162,10 @@ export const SubscribeWidget: React.FC<SubscribeWidgetProps> = ({ language = 'id
                <div className="px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20">
                  <p className="text-[8px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Priority Status</p>
                </div>
-               <p className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Admin ID: 081122220044</p>
+               <p className="text-[9px] font-bold text-slate-400 dark:text-slate-300 uppercase tracking-widest">Admin ID: 081122220044</p>
             </div>
             
-            <p className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.4em]">
+            <p className="text-[8px] font-black text-slate-400 dark:text-slate-300 uppercase tracking-[0.4em]">
               POWERED BY <span className="text-emerald-500">MONTANA</span> CONNECT ENGINE
             </p>
           </div>

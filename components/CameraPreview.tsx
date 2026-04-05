@@ -3,14 +3,16 @@ import React from 'react';
 
 interface CameraPreviewProps {
   type?: 'map' | 'camera';
+  onOpenFullscreen: (payload: { title: string; subtitle: string; url: string; accent: 'emerald' | 'blue' }) => void;
 }
 
-export const CameraPreview: React.FC<CameraPreviewProps> = ({ type = 'map' }) => {
+export const CameraPreview: React.FC<CameraPreviewProps> = ({ type = 'map', onOpenFullscreen }) => {
   const isMap = type === 'map';
   const url = isMap ? "https://livepeta.montana-tech.info/" : "https://camera.montana-tech.info/";
   const title = isMap ? "Live Spatial Monitoring" : "Smart Camera Terminal";
   const icon = isMap ? "fa-map-marked-alt" : "fa-camera-retro";
   const subtitle = isMap ? "Montana Geospatial Intelligence" : "Montana Documentation Engine";
+  const accent = isMap ? 'emerald' : 'blue';
 
   return (
     <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-[44px] p-6 sm:p-10 border border-slate-100 dark:border-slate-800 shadow-2xl overflow-hidden group transition-all animate-fadeIn">
@@ -30,15 +32,14 @@ export const CameraPreview: React.FC<CameraPreviewProps> = ({ type = 'map' }) =>
                <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Enhanced View Active</span>
             </div>
           )}
-          <a 
-            href={url} 
-            target="_blank" 
-            rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={() => onOpenFullscreen({ title, subtitle, url, accent })}
             className="flex-1 md:flex-none px-8 py-3.5 bg-slate-900 dark:bg-slate-800 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.15em] shadow-xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3"
           >
             <i className="fas fa-expand-arrows-alt"></i>
             Full Screen
-          </a>
+          </button>
         </div>
       </div>
 
@@ -62,7 +63,7 @@ export const CameraPreview: React.FC<CameraPreviewProps> = ({ type = 'map' }) =>
       </div>
       
       <div className="mt-6 flex items-center justify-between px-2">
-         <p className="text-[10px] font-mono font-bold text-slate-400 dark:text-slate-600 uppercase tracking-tighter truncate">
+         <p className="text-[10px] font-mono font-bold text-slate-400 dark:text-slate-300 uppercase tracking-tighter truncate">
            Secure Terminal: {url.replace('https://', '')}
          </p>
          <div className="flex gap-4 opacity-40 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all">
