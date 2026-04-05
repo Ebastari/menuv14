@@ -16,10 +16,5 @@
     }
   ],
   "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "certs": [
-    {
-      "id": "cert_DfV8GRkHAvVFiOCcBZjQGcn9"
-    }
-  ]
+  "installCommand": "npm install"
 }
